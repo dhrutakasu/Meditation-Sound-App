@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group
+        android:id="@+id/GrpSendEmail"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/NavMail"
+            android:title="Send me an email" />
+    </group>
+    <group
+        android:id="@+id/GrpFAQ"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/NavFAQ"
+            android:title="FAQ" />
+    </group>
+    <group
+        android:id="@+id/GrpRating"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/NavRating"
+            android:title="Rating" />
+    </group>
+    <group
+        android:id="@+id/GrpSharing"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/NavSharing"
+            android:title="Sharing" />
+    </group>
+    <group
+    android:id="@+id/GrpPolicy"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/NavPolicy"
+            android:title="Privacy Policy" />
+    </group>
+</menu>

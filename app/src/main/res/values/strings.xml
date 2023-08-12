@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Meditation Sound App</string>
+    <string name="MSG_ASK_PERMISSION">This app needs permissions to use this feature. You can grant them in app settings.</string>
+    <string name="str_faq">FAQ</string>
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_policy">Privacy Policy</string>
+
 </resources>

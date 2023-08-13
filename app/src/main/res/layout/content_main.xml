@@ -31,11 +31,10 @@
         android:id="@+id/LlCategoryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/msgBackground"
         android:gravity="center"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:visibility=""
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
         app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg">
@@ -104,12 +103,12 @@
                 android:id="@+id/TvCountSounds"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="true"
+                android:layout_alignTop="@+id/IvPreview"
                 android:layout_alignEnd="@+id/IvPreview"
                 android:text="5"
                 android:gravity="center"
                 android:textSize="10dp"
-                android:layout_marginBottom="@dimen/minus_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/ic_count_bg"
                 android:textColor="@color/white" />
         </RelativeLayout>

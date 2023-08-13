@@ -3,8 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/activity_med_main.xml" value="0.1685185185185185" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/ic_count_bg.xml" value="0.114" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/seek_bar.xml" value="0.25" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/activity_med_main.xml" value="0.22" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/app_bar_main.xml" value="0.16" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/app_layout_header.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/content_main.xml" value="0.3063973063973064" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/drawer_header.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/nav_header_main.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/menu/navigation_menu.xml" value="0.19692307692307692" />
       </map>
     </option>
   </component>

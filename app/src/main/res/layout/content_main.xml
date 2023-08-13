@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <ImageView
+        android:id="@+id/IvCategoryImg"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintStart_toStartOf="@id/guideStarts"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/IvCategoryNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_next_arrow"
+        android:layout_marginEnd="@dimen/_8sdp"
+        app:layout_constraintBottom_toBottomOf="@id/IvCategoryImg"
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/LlCategoryTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/msgBackground"
+        android:gravity="center"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:visibility=""
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintStart_toStartOf="@id/guideStarts"
+        app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg">
+
+        <TextView
+            android:id="@+id/TvCategoryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:freezesText="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LlButtonView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:gravity="center"
+        android:padding="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/ConsVolume"
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintStart_toStartOf="@id/guideStarts">
+
+        <ImageView
+            android:id="@+id/IvFav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:srcCompat="@drawable/icon_fav" />
+
+        <ImageView
+            android:id="@+id/IvSoundPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:srcCompat="@drawable/icon_pause" />
+
+        <ImageView
+            android:id="@+id/IvSoundStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:srcCompat="@drawable/icon_stop" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/IvPreview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                app:srcCompat="@drawable/icon_preview" />
+
+            <TextView
+                android:id="@+id/TvCountSounds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="true"
+                android:layout_alignEnd="@+id/IvPreview"
+                android:text="5"
+                android:gravity="center"
+                android:textSize="10dp"
+                android:layout_marginBottom="@dimen/minus_10sdp"
+                android:background="@drawable/ic_count_bg"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConsBottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/IvFavoriteTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favourite"
+            app:layout_constraintEnd_toStartOf="@+id/IvReminderTab"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/IvReminderTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@+id/IvHomeTab"
+            app:layout_constraintStart_toEndOf="@id/IvFavoriteTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_reminder" />
+
+        <ImageView
+            android:id="@+id/IvHomeTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/IvPagesTab"
+            app:layout_constraintStart_toEndOf="@+id/IvReminderTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_home" />
+
+        <ImageView
+            android:id="@+id/IvPagesTab"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/IvCustomTab"
+            app:layout_constraintStart_toEndOf="@+id/IvHomeTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_pages" />
+
+        <ImageView
+            android:id="@+id/IvCustomTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/IvPagesTab"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_custom" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConsVolume"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/ic_volume_bar"
+        android:padding="@dimen/_5sdp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/ConsBottom"
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintStart_toStartOf="@id/guideStarts">
+
+        <ImageView
+            android:id="@+id/IvVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:src="@drawable/ic_volume"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/SeekVolume"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:progress="50"
+            android:progressDrawable="@drawable/seek_bar"
+            android:thumb="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/TvVolume"
+            app:layout_constraintStart_toEndOf="@id/IvVolume"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/TvVolume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_8sdp"
+            android:text="0"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideStarts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.09" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideEnds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.91" />
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/PagerCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/_7sdp"
+        android:layout_weight="1"
+        app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintStart_toStartOf="@id/guideStarts"
+        app:layout_constraintTop_toBottomOf="@+id/LlCategoryTitle">
+
+        <com.google.android.material.tabs.TabLayout
+                android:id="@+id/TabCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:visibility="gone" />
+    </androidx.viewpager.widget.ViewPager>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

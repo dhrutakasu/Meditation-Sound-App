@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:openDrawer="end"
     tools:context=".SoundUi.MedActivity.MedMainActivity">
 
     <RelativeLayout
@@ -25,14 +26,19 @@
     </RelativeLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:layout_width="320dp"
+        android:layout_width="230dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/navigationViewBackground"
+        android:background="@color/white"
         android:fitsSystemWindows="true"
+        app:itemBackground="@color/white"
         app:headerLayout="@layout/drawer_header"
-        app:itemTextColor="@color/white"
         app:menu="@menu/navigation_menu" />
+
+    <include
+        layout="@layout/app_bar_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <fragment
         android:id="@+id/NcMain"

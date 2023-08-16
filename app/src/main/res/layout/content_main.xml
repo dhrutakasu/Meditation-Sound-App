@@ -12,7 +12,9 @@
         android:id="@+id/IvCategoryImg"
         android:layout_width="0dp"
         android:layout_height="100dp"
-        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_rain_img"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,20 +23,31 @@
         android:id="@+id/IvCategoryNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_next_arrow"
         android:layout_marginEnd="@dimen/_8sdp"
+        android:src="@drawable/ic_next_arrow"
         app:layout_constraintBottom_toBottomOf="@id/IvCategoryImg"
-        app:layout_constraintEnd_toEndOf="@id/guideEnds"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/IvCategoryImg"
+        app:layout_constraintTop_toTopOf="@id/IvCategoryImg" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/IvCategoryPrevious"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:src="@drawable/ic_previous_arrow"
+        app:layout_constraintBottom_toBottomOf="@id/IvCategoryImg"
+        app:layout_constraintStart_toStartOf="@id/IvCategoryImg"
+        app:layout_constraintTop_toTopOf="@id/IvCategoryImg" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/LlCategoryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center"
+        android:orientation="vertical"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
         app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg">
@@ -49,8 +62,21 @@
             android:freezesText="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:singleLine="true" />
-    </LinearLayout>
+            android:singleLine="true"
+            android:text="@string/app_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_2sdp"
+            android:src="@drawable/ic_title_bar"
+            app:layout_constraintEnd_toEndOf="@id/TvCategoryTitle"
+            app:layout_constraintStart_toStartOf="@id/TvCategoryTitle"
+            app:layout_constraintTop_toBottomOf="@id/TvCategoryTitle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/LlButtonView"
@@ -105,22 +131,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/IvPreview"
                 android:layout_alignEnd="@+id/IvPreview"
-                android:text="5"
-                android:gravity="center"
-                android:textSize="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/ic_count_bg"
-                android:textColor="@color/white" />
+                android:gravity="center"
+                android:text="5"
+                android:textColor="@color/white"
+                android:textSize="8dp" />
         </RelativeLayout>
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/ConsBottom"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
+        android:background="@color/app_main_color_light10"
+        android:padding="@dimen/_12sdp"
+        android:weightSum="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -129,48 +154,38 @@
             android:id="@+id/IvFavoriteTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_favourite"
-            app:layout_constraintEnd_toStartOf="@+id/IvReminderTab"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_favourite" />
 
         <ImageView
             android:id="@+id/IvReminderTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/IvHomeTab"
-            app:layout_constraintStart_toEndOf="@id/IvFavoriteTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_reminder" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_reminder" />
 
         <ImageView
             android:id="@+id/IvHomeTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/IvPagesTab"
-            app:layout_constraintStart_toEndOf="@+id/IvReminderTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_home" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_home" />
 
         <ImageView
             android:id="@+id/IvPagesTab"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/IvCustomTab"
-            app:layout_constraintStart_toEndOf="@+id/IvHomeTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_pages" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_pages" />
 
         <ImageView
             android:id="@+id/IvCustomTab"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/IvPagesTab"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_custom" />
+            android:layout_weight="1"
+            android:src="@drawable/ic_custom" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConsVolume"
@@ -178,7 +193,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/_10sdp"
         android:background="@drawable/ic_volume_bar"
-        android:padding="@dimen/_5sdp"
+        android:padding="@dimen/_8sdp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/ConsBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
@@ -234,14 +249,15 @@
         android:id="@+id/PagerCategory"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_7sdp"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_weight="1"
+        app:layout_constraintBottom_toTopOf="@+id/ConsBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
         app:layout_constraintTop_toBottomOf="@+id/LlCategoryTitle">
 
         <com.google.android.material.tabs.TabLayout
-                android:id="@+id/TabCategory"
+            android:id="@+id/TabCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"

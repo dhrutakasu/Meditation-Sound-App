@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_10sdp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:id="@+id/LlSettingTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_setting_title"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <TextView
+        android:id="@+id/TvPowerSaving"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_26sdp"
+        android:gravity="center_vertical"
+        android:text="@string/powerSaving"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toStartOf="@+id/SwitchPower"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/LlSettingTitle" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/SwitchPower"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:checked="true"
+        android:thumb="@drawable/thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@id/TvPowerSaving"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintTop_toTopOf="@id/TvPowerSaving"
+        app:track="@drawable/track_selector" />
+
+    <TextView
+        android:id="@+id/TvNightMode"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/NightMode"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toStartOf="@+id/SwitchNight"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/TvPowerSaving" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/SwitchNight"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:checked="true"
+        android:thumb="@drawable/thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@id/TvNightMode"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintTop_toTopOf="@id/TvNightMode"
+        app:track="@drawable/track_selector" />
+
+    <TextView
+        android:id="@+id/TvDeviceVolume"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/DeviceVolume"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toStartOf="@+id/SwitchDevice"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/TvNightMode" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/SwitchDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:checked="true"
+        android:thumb="@drawable/thumb_selector"
+        app:layout_constraintBottom_toBottomOf="@id/TvDeviceVolume"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintTop_toTopOf="@id/TvDeviceVolume"
+        app:track="@drawable/track_selector" />
+
+    <TextView
+        android:id="@+id/TvFadingCountdown"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/FadingCountdown"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/TvDeviceVolume" />
+
+    <Spinner
+        android:id="@+id/SpinnerCountdown"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/spinner_bg"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@+id/TvFadingCountdown"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <TextView
+        android:id="@+id/TvDefaultVolume"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/DefaultVolume"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/SpinnerCountdown" />
+
+    <Spinner
+        android:id="@+id/SpinnerDefaultVolume"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/spinner_bg"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@+id/TvDefaultVolume"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <TextView
+        android:id="@+id/TvTimerInterface"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/TimerInterface"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@id/SpinnerDefaultVolume" />
+
+    <Spinner
+        android:id="@+id/SpinnerTimerInterface"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_35sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@drawable/spinner_bg"
+        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
+        app:layout_constraintTop_toBottomOf="@+id/TvTimerInterface"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/IvOkDialogSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_22sdp"
+        android:src="@drawable/ic_ok_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SpinnerTimerInterface" />
+
+    <TextView
+        android:id="@+id/TvCancelDialogSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_22sdp"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/IvOkDialogSetting"
+        app:layout_constraintTop_toBottomOf="@id/IvOkDialogSetting" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideDialogStarts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideDialogEnds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.92" />
+</androidx.constraintlayout.widget.ConstraintLayout>

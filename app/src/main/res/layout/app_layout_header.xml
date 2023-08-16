@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/RlTopBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_50sdp"
         android:background="@drawable/ic_top_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,8 +22,8 @@
 
             <ImageView
                 android:id="@+id/IvBack"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="@dimen/_22sdp"
+                android:layout_height="@dimen/_22sdp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_6sdp"
+        android:layout_marginTop="@dimen/_4sdp"
         android:layout_marginEnd="@dimen/_15sdp"
         android:background="@drawable/ic_top_inner_bar"
         app:layout_constraintEnd_toEndOf="parent"

@@ -6,5 +6,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="str_policy">Privacy Policy</string>
     <string name="msg_audiofocus">If you are running multiple multimedia applications at the same time, I can not stop the sounds in case of an incoming call.</string>
+    <string name="setTimer">Set the Time</string>
+    <string name="stopTimer">Stop TIme</string>
+    <string name="cancel">Cancel</string>
+    <string name="powerSaving">Power saving</string>
+    <string name="NightMode">Night mode</string>
+    <string name="DeviceVolume">Device volume bar</string>
+    <string name="FadingCountdown">Fading during the countdown</string>
+    <string name="DefaultVolume">Default volume of the sounds</string>
+    <string name="TimerInterface">Timer interface</string>
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
 
 </resources>

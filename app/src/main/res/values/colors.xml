@@ -2,10 +2,16 @@
 <resources>
     <color name="purple_200">#5622EB</color>
     <color name="purple_500">#5622EB</color>
-    <color name="purple_700">#5622EB</color>
+    <color name="purple_700">#4911E8</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="seek_bar_background">#ababab</color>
+    <color name="app_main_color">#5622EB</color>
+    <color name="app_main_color_light10">#1A5622EB</color>
+    <color name="app_main_color_light20">#335622EB</color>
+    <color name="purple_light">#AF94FF</color>
+    <color name="app_main_color_gray">#4E4E4E</color>
+    <color name="app_main_color_center">#9976FF</color>
 </resources>

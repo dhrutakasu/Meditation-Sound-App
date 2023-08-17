@@ -6,17 +6,6 @@
         <item name="android:colorPrimary">@color/black</item>
     </style>
 
-    <style name="AppTheme">
-        <item name="colorAccent">@color/purple_500</item>
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_500</item>
-        <item name="elevation">0dp</item>
-    </style>
-    <style name="AppTheme.AppBarOverlay">
-    </style>
-    <style name="AppTheme.PopupOverlay">
-    </style>
-
     <style name="TimePicker" parent="android:Widget.Material.TimePicker">
         <item name="android:headerBackground">@color/app_main_color_center</item>
 <!--        <item name="android:numbersTextColor">@color/black</item>-->

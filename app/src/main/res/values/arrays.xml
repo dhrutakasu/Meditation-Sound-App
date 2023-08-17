@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <array name="rain_song">
-        <item></item>
-    </array>
+    <string-array name="CategoryList">
+        <item>Rain Sounds</item>
+        <item>Nature Sounds</item>
+        <item>Wind Sounds</item>
+        <item>City Sounds</item>
+        <item>Country Sounds</item>
+        <item>Night Sounds</item>
+        <item>Home Sounds</item>
+        <item>Relaxing Sounds</item>
+        <item>Noise</item>
+        <item>Binaural beats</item>
+    </string-array>
 </resources>

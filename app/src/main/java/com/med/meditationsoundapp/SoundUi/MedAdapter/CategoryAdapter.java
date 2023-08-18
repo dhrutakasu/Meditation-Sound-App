@@ -18,9 +18,9 @@ public class CategoryAdapter extends FragmentPagerAdapter {
 
     public CategoryAdapter(FragmentManager supportFragmentManager, Context context, int selectedTabPosition, String[] listOfCategory) {
         super(supportFragmentManager);
-        this.context=context;
-        this.selectedTabPosition=selectedTabPosition;
-        this.listOfCategory=listOfCategory;
+        this.context = context;
+        this.selectedTabPosition = selectedTabPosition;
+        this.listOfCategory = listOfCategory;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     @NonNull
     @Override
     public Fragment getItem(int position) {
-            return  CategoryFragment.newInstance(listOfCategory[position],position);
+        return CategoryFragment.newInstance(listOfCategory[position], position);
     }
 }

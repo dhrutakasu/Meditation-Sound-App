@@ -4,6 +4,7 @@
         <item>Rain Sounds</item>
         <item>Nature Sounds</item>
         <item>Wind Sounds</item>
+        <item>Water Sounds</item>
         <item>City Sounds</item>
         <item>Country Sounds</item>
         <item>Night Sounds</item>
@@ -11,5 +12,6 @@
         <item>Relaxing Sounds</item>
         <item>Noise</item>
         <item>Binaural beats</item>
+        <item>Own Sounds</item>
     </string-array>
 </resources>

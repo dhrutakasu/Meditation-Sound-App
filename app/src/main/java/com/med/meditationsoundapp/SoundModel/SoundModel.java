@@ -1,12 +1,14 @@
 package com.med.meditationsoundapp.SoundModel;
 
 public class SoundModel {
+    int SoundMp3Checked;
     int SoundIcon;
     String SoundMp3;
 
-    public SoundModel(int soundIcon, String soundMp3) {
+    public SoundModel(int soundIcon, String soundMp3, int soundMp3Checked) {
         SoundIcon = soundIcon;
         SoundMp3 = soundMp3;
+        SoundMp3Checked = soundMp3Checked;
     }
 
     public int getSoundIcon() {
@@ -25,11 +27,20 @@ public class SoundModel {
         SoundMp3 = soundMp3;
     }
 
+    public int getSoundMp3Checked() {
+        return SoundMp3Checked;
+    }
+
+    public void setSoundMp3Checked(int soundMp3Checked) {
+        SoundMp3Checked = soundMp3Checked;
+    }
+
     @Override
     public String toString() {
         return "SoundModel{" +
-                "SoundIcon=" + SoundIcon +
-                ", SoundMp3=" + SoundMp3 +
+                "SoundMp3Checked=" + SoundMp3Checked +
+                ", SoundIcon=" + SoundIcon +
+                ", SoundMp3='" + SoundMp3 + '\'' +
                 '}';
     }
 }

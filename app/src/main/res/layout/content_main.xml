@@ -39,47 +39,6 @@
         app:layout_constraintStart_toStartOf="@id/IvCategoryImg"
         app:layout_constraintTop_toTopOf="@id/IvCategoryImg" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/LlCategoryTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:paddingStart="5dp"
-        android:paddingEnd="5dp"
-        app:layout_constraintEnd_toEndOf="@id/guideEnds"
-        app:layout_constraintStart_toStartOf="@id/guideStarts"
-        app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg">
-
-        <TextView
-            android:id="@+id/TvCategoryTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:freezesText="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:scrollHorizontally="true"
-            android:singleLine="true"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:text="@string/app_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_2sdp"
-            android:src="@drawable/ic_title_bar"
-            app:layout_constraintEnd_toEndOf="@id/TvCategoryTitle"
-            app:layout_constraintStart_toStartOf="@id/TvCategoryTitle"
-            app:layout_constraintTop_toBottomOf="@id/TvCategoryTitle" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
     <LinearLayout
         android:id="@+id/LlButtonView"
         android:layout_width="0dp"
@@ -238,14 +197,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.09" />
+        app:layout_constraintGuide_percent="0.08" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideEnds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.91" />
+        app:layout_constraintGuide_percent="0.92" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/PagerCategory"
@@ -253,10 +212,10 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/ConsBottom"
+        app:layout_constraintBottom_toTopOf="@+id/LlButtonView"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
-        app:layout_constraintTop_toBottomOf="@+id/LlCategoryTitle">
+        app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/TabCategory"

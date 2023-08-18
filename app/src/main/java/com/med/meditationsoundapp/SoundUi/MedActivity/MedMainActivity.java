@@ -7,17 +7,22 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PorterDuff;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -31,6 +36,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundDialog.SoundReminderDialog;
 import com.med.meditationsoundapp.SoundDialog.SoundSettingDialog;
 import com.med.meditationsoundapp.SoundUi.MedAdapter.CategoryAdapter;
@@ -40,9 +46,8 @@ import java.io.IOException;
 public class MedMainActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private Context context;
-    private ImageView IvBack, IvCategoryImg, IvCategoryNext, IvDrawer, IvSetting, IvUpload;
+    private ImageView IvBack, IvCategoryImg, IvCategoryNext, IvCategoryPrevious, IvDrawer, IvSetting, IvUpload;
     private TextView TvTitle;
-    private TextView TvCategoryTitle;
     private ImageView IvFav, IvSoundPlayPause, IvSoundStop, IvPreview, IvFavoriteTab, IvReminderTab, IvHomeTab, IvPagesTab, IvCustomTab;
     private TextView TvCountSounds, TvVolume;
     private SeekBar SeekVolume;
@@ -53,6 +58,8 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private DrawerLayout DrawerMain;
     private ActionBarDrawerToggle DrawerToggle;
     private NavigationView NavMain;
+    private String[] ListOfCategory;
+    private AudioManager audioManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +75,13 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         IvBack = (ImageView) findViewById(R.id.IvBack);
         IvCategoryImg = (ImageView) findViewById(R.id.IvCategoryImg);
         IvCategoryNext = (ImageView) findViewById(R.id.IvCategoryNext);
+        IvCategoryPrevious = (ImageView) findViewById(R.id.IvCategoryPrevious);
         IvDrawer = (ImageView) findViewById(R.id.IvDrawer);
         IvDrawer = (ImageView) findViewById(R.id.IvDrawer);
         TvTitle = (TextView) findViewById(R.id.TvTitle);
         IvSetting = (ImageView) findViewById(R.id.IvSetting);
         IvUpload = (ImageView) findViewById(R.id.IvUpload);
         DrawerMain = (DrawerLayout) findViewById(R.id.DrawerMain);
-        TvCategoryTitle = (TextView) findViewById(R.id.TvCategoryTitle);
         IvFav = (ImageView) findViewById(R.id.IvFav);
         IvSoundPlayPause = (ImageView) findViewById(R.id.IvSoundPlayPause);
         IvSoundStop = (ImageView) findViewById(R.id.IvSoundStop);
@@ -104,22 +111,8 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         IvSetting.setOnClickListener(this);
         IvUpload.setOnClickListener(this);
         IvDrawer.setOnClickListener(this);
-        TabCategory.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                TvCategoryTitle.setText(tab.getText());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
+        IvCategoryNext.setOnClickListener(this);
+        IvCategoryPrevious.setOnClickListener(this);
     }
 
     private void MedInitActions() {
@@ -129,7 +122,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         IvBack.setVisibility(View.GONE);
         TvTitle.setText(getString(R.string.app_name));
         LlButtonView.setVisibility(View.GONE);
-        ConsVolume.setVisibility(View.GONE);
+        ConsVolume.setVisibility(View.VISIBLE);
 
         IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
         IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
@@ -141,26 +134,72 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         DrawerMain.addDrawerListener(DrawerToggle);
         DrawerToggle.syncState();
 
-        String[] ListOfCategory = getResources().getStringArray(R.array.CategoryList);
+        ListOfCategory = getResources().getStringArray(R.array.CategoryList);
         for (int i = 0; i < ListOfCategory.length; i++) {
             TabCategory.addTab(TabCategory.newTab().setText(ListOfCategory[i].toString()));
             System.out.println("---- -- - TABB : " + ListOfCategory[i].toString());
         }
-        /*TabCategory.addTab(TabCategory.newTab().setText("Rain Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Nature Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Wind Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("City Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Country Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Night Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Home Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Relaxing Sounds"));
-        TabCategory.addTab(TabCategory.newTab().setText("Noise"));
-        TabCategory.addTab(TabCategory.newTab().setText("Binaural beats"));*/
-
-        TvCategoryTitle.setText(ListOfCategory[0].toString());
 
         PagerCategory.setAdapter(new CategoryAdapter(getSupportFragmentManager(), context, TabCategory.getSelectedTabPosition(), ListOfCategory));
         TabCategory.setupWithViewPager(PagerCategory);
+
+        if (PagerCategory.getCurrentItem() == 0) {
+            IvCategoryPrevious.setVisibility(View.GONE);
+        } else {
+            IvCategoryPrevious.setVisibility(View.VISIBLE);
+        }
+
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+        int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        TvVolume.setText(volume + "");
+        SeekVolume.setProgress(volume);
+        SeekVolume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        SeekVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int newVolume, boolean b) {
+                TvVolume.setText(newVolume + "");
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                MainReceiver, new IntentFilter(MedConstants.BROADCAST_MAIN));
+    }
+
+    private BroadcastReceiver MainReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LlButtonView.setVisibility(View.VISIBLE);
+        }
+    };
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                int volumeUp = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                TvVolume.setText(volumeUp + "");
+                SeekVolume.setProgress(volumeUp);
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                int volumeDown = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                TvVolume.setText(volumeDown + "");
+                SeekVolume.setProgress(volumeDown);
+                return true;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -249,6 +288,37 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     DrawerMain.closeDrawer(GravityCompat.START);
                 } else {
                     DrawerMain.openDrawer(GravityCompat.START);
+                }
+                break;
+            case R.id.IvCategoryNext:
+                if (DrawerMain.isOpen()) {
+                    DrawerMain.closeDrawer(GravityCompat.START);
+                }
+                if ((PagerCategory.getCurrentItem() + 1) == (ListOfCategory.length - 1)) {
+                    IvCategoryNext.setVisibility(View.GONE);
+                } else {
+                    IvCategoryNext.setVisibility(View.VISIBLE);
+                }
+                IvCategoryPrevious.setVisibility(View.VISIBLE);
+
+                System.out.println("---- - - next : " + (PagerCategory.getCurrentItem() + 1) + " - size : " + ListOfCategory.length);
+                if (PagerCategory.getCurrentItem() != (ListOfCategory.length - 1)) {
+                    PagerCategory.setCurrentItem(PagerCategory.getCurrentItem() + 1);
+                }
+                break;
+            case R.id.IvCategoryPrevious:
+                if (DrawerMain.isOpen()) {
+                    DrawerMain.closeDrawer(GravityCompat.START);
+                }
+                if ((PagerCategory.getCurrentItem() - 1) == 0) {
+                    IvCategoryPrevious.setVisibility(View.GONE);
+                } else {
+                    IvCategoryPrevious.setVisibility(View.VISIBLE);
+                }
+                IvCategoryNext.setVisibility(View.VISIBLE);
+                System.out.println("---- - - previous : " + (PagerCategory.getCurrentItem() - 1) + " - size : " + ListOfCategory.length);
+                if (PagerCategory.getCurrentItem() != 0) {
+                    PagerCategory.setCurrentItem(PagerCategory.getCurrentItem() - 1);
                 }
                 break;
         }

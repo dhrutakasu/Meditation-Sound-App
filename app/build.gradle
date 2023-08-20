@@ -55,5 +55,8 @@ dependencies {
 
     //todo indicator dependency
     implementation 'me.relex:circleindicator:2.1.6'
+
+    //todo Gson dependency
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 

@@ -2,23 +2,30 @@ package com.med.meditationsoundapp.SoundUi.MedFragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundModel.SoundModel;
 import com.med.meditationsoundapp.SoundUi.MedAdapter.CategoryListAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class CategoryFragment extends Fragment {
 
@@ -30,6 +37,8 @@ public class CategoryFragment extends Fragment {
     private RecyclerView RvCategoryList;
     private ArrayList<SoundModel> SoundModelsList;
     private CategoryListAdapter categoryListAdapter;
+    private int currentAudioIndex = -1;
+    private MediaPlayer mediaPlayer;
 
     public static CategoryFragment newInstance(String category, int position) {
         CategoryFragment fragment = new CategoryFragment();
@@ -101,14 +110,43 @@ public class CategoryFragment extends Fragment {
         } else if (Cate_Pos == 11) {
             RvCategoryList.setVisibility(View.GONE);
         }
+        ArrayList<MediaPlayer> mediaPlayerArrayList = new ArrayList<>();
         categoryListAdapter = new CategoryListAdapter(context, SoundModelsList, new CategoryListAdapter.setSoundPlay() {
             @Override
             public void SoundPlays(int position) {
-                if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                    SoundModelsList.get(position).setSoundMp3Checked(1);
+//                    MediaPlayer mediaPlayer = new MediaPlayer();
+//                    mediaPlayer.setDataSource(SoundModelsList.get(position).getSoundMp3());
+//                    mediaPlayer.setLooping(true);
+//                    if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
+//                        mediaPlayer.prepare();
+//                        mediaPlayer.start();
+//                        SoundModelsList.get(position).setSoundMp3Checked(1);
+//                        mediaPlayerArrayList.add(mediaPlayer);
+//                    } else {
+//                        mediaPlayer.stop();
+//                        SoundModelsList.get(position).setSoundMp3Checked(0);
+//                        mediaPlayerArrayList.remove( mediaPlayer);
+//                    }
+                if (currentAudioIndex == position) {
+                    // Toggle play/pause for the same item
+                    if (mediaPlayer != null) {
+                        if (mediaPlayer.isPlaying()) {
+                            mediaPlayer.pause();
+                            SoundModelsList.get(position).setSoundMp3Checked(0);
+                        } else {
+                            mediaPlayer.start();
+                            SoundModelsList.get(position).setSoundMp3Checked(1);
+                        }
+                    }
                 } else {
-                    SoundModelsList.get(position).setSoundMp3Checked(0);
+                    currentAudioIndex = position;
+                    releaseMediaPlayer();
+                    SoundModelsList.get(position).setSoundMp3Checked(1);
+                    initializeMediaPlayer(SoundModelsList.get(currentAudioIndex).getSoundMp3());
                 }
+
+                System.out.println("--- - -- - MP# : " + SoundModelsList.get(position).getSoundMp3());
+
                 categoryListAdapter.notifyDataSetChanged();
 
                 Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
@@ -116,5 +154,30 @@ public class CategoryFragment extends Fragment {
             }
         });
         RvCategoryList.setAdapter(categoryListAdapter);
+    }
+
+    private void initializeMediaPlayer(String audioUrl) {
+        releaseMediaPlayer();
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mediaPlayer.setDataSource(audioUrl);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.prepareAsync();
+            mediaPlayer.setOnPreparedListener(mp -> {
+                if (mediaPlayer != null) {
+                    mediaPlayer.start();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void releaseMediaPlayer() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

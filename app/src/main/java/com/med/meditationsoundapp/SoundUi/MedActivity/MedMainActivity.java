@@ -170,8 +170,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                MainReceiver, new IntentFilter(MedConstants.BROADCAST_MAIN));
+        LocalBroadcastManager.getInstance(context).registerReceiver(MainReceiver, new IntentFilter(MedConstants.BROADCAST_MAIN));
     }
 
     private BroadcastReceiver MainReceiver = new BroadcastReceiver() {

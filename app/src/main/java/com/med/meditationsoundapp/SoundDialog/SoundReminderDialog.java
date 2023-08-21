@@ -9,15 +9,16 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.med.meditationsoundapp.R;
-import com.med.meditationsoundapp.SoundAds.MedAd_Native;
 import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
 
 public class SoundReminderDialog extends Dialog {
     private final MedMainActivity activity;
+    private final DialogDismiss dialogDismiss;
 
-    public SoundReminderDialog(MedMainActivity activity, Context context) {
+    public SoundReminderDialog(MedMainActivity activity, Context context,DialogDismiss dismiss) {
         super(context);
         this.activity = activity;
+        this.dialogDismiss = dismiss;
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
@@ -31,10 +32,14 @@ public class SoundReminderDialog extends Dialog {
         ImageView IvOkDialog = (ImageView) findViewById(R.id.IvOkDialog);
         TextView TvCancelDialog = (TextView) findViewById(R.id.TvCancelDialog);
         IvOkDialog.setOnClickListener(view -> {
-            dismiss();
+            dialogDismiss.DismissListener(this);
         });
         TvCancelDialog.setOnClickListener(view -> {
-            dismiss();
+            dialogDismiss.DismissListener(this);
         });
+    }
+
+    public interface DialogDismiss {
+        void DismissListener(SoundReminderDialog soundReminderDialog);
     }
 }

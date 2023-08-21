@@ -1,16 +1,26 @@
 package com.med.meditationsoundapp.SoundUi.MedActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.ArraySet;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.View;
 
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundConstants.MedConstants;
+import com.med.meditationsoundapp.SoundModel.PlyerModel;
+import com.med.meditationsoundapp.SoundModel.SoundModel;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class MedSplashActivity extends AppCompatActivity {
 
-    private long seconds=3;
+    private long seconds = 3;
     private long secondsRemaining;
 
     @Override
@@ -31,6 +41,7 @@ public class MedSplashActivity extends AppCompatActivity {
     }
 
     private void MedInitActions() {
+
         CountDownTimer countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -51,7 +62,7 @@ public class MedSplashActivity extends AppCompatActivity {
 //            startActivity(new Intent(this, WalkthroughActivity.class));
 //            new MyAppPref(SplashActivity.this).putBoolean(MyAppPref.APP_WALKTHROUGH, true);
 //        } else {
-            startActivity(new Intent(this, MedMainActivity.class));
+        startActivity(new Intent(this, MedMainActivity.class));
 //        }
         finish();
     }

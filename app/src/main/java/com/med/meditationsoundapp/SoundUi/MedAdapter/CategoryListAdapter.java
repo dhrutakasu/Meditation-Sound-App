@@ -19,7 +19,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     private final ArrayList<SoundModel> soundModelsList;
     private final setSoundPlay setSoundPlay;
 
-    public CategoryListAdapter(Context context, ArrayList<SoundModel> soundModelsList,setSoundPlay setSoundPlay) {
+    public CategoryListAdapter(Context context, ArrayList<SoundModel> soundModelsList, setSoundPlay setSoundPlay) {
         this.context = context;
         this.soundModelsList = soundModelsList;
         this.setSoundPlay = setSoundPlay;
@@ -35,22 +35,22 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.IvCategoryImg.setImageResource(soundModelsList.get(position).getSoundIcon());
-        System.out.println("---- - -pos : " + position + " -- - : " + soundModelsList.get(position).getSoundMp3Checked());
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
         } else {
             holder.IvCategoryImgChecked.setVisibility(View.GONE);
         }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setSoundPlay.SoundPlays(position);
+                setSoundPlay.SoundPlays(position,soundModelsList.get(position).getSoundPos());
             }
         });
     }
 
     public interface setSoundPlay {
-        void SoundPlays(int pos);
+        void SoundPlays(int position, int PlayerPos);
     }
 
     @Override

@@ -33,6 +33,7 @@ public class SelectSoundAdapter extends RecyclerView.Adapter<SelectSoundAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.TvCategoryTitle.setText(soundModelsList[position].toString());
+        holder.TvCategoryTitle.setSelected(true);
 
         holder.itemView.setOnClickListener(view -> selectionSoundPlay.SoundSelect(position));
     }

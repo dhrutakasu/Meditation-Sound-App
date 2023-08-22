@@ -7,19 +7,26 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
+import com.med.meditationsoundapp.SoundDialog.SoundMaxDialog;
+import com.med.meditationsoundapp.SoundDialog.SoundReminderDialog;
 import com.med.meditationsoundapp.SoundModel.SoundModel;
+import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
 import com.med.meditationsoundapp.SoundUi.MedAdapter.CategoryListAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -119,29 +126,43 @@ public class CategoryFragment extends Fragment {
         categoryListAdapter = new CategoryListAdapter(context, SoundModelsList, new CategoryListAdapter.setSoundPlay() {
             @Override
             public void SoundPlays(int position, int PlayerPos) {
-                try {
-                    if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                        SoundModelsList.get(position).setSoundMp3Checked(1);
+                if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
+                    try {
+                        if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
+                            SoundModelsList.get(position).setSoundMp3Checked(1);
 
-                        MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().prepare();
-                        MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnPreparedListener(mp ->
-                                MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
-                        MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
-                                MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
-                        MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
-                    } else {
-                        SoundModelsList.get(position).setSoundMp3Checked(0);
-                        MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
-                        MedConstants.SelectedPlayerArrayList.remove(MedConstants.mediaPlayerArrayList.get(PlayerPos));
+                            MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().prepare();
+                            MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnPreparedListener(mp ->
+                                    MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
+                            MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
+                                    MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
+                            MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
+                        } else {
+                            SoundModelsList.get(position).setSoundMp3Checked(0);
+                            MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
+                            MedConstants.SelectedPlayerArrayList.remove(MedConstants.mediaPlayerArrayList.get(PlayerPos));
+                        }
+
+                        categoryListAdapter.notifyDataSetChanged();
+
+                        Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
+                        intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
-                    categoryListAdapter.notifyDataSetChanged();
-
-                    Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
-                    intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    SoundMaxDialog reminderDialog = new SoundMaxDialog(context, (SoundMaxDialog soundMaxDialog) -> {
+                        soundMaxDialog.dismiss();
+                    });
+                    reminderDialog.show();
+                    WindowManager.LayoutParams lp = reminderDialog.getWindow().getAttributes();
+                    Window window = reminderDialog.getWindow();
+                    lp.copyFrom(window.getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    lp.gravity = Gravity.CENTER;
+                    window.setAttributes(lp);
                 }
             }
         });
@@ -151,10 +172,22 @@ public class CategoryFragment extends Fragment {
     private BroadcastReceiver FragmentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            for (int j = 0; j < SoundModelsList.size(); j++) {
-                SoundModel soundModel = SoundModelsList.get(j);
-                soundModel.setSoundMp3Checked(0);
-                SoundModelsList.set(j, soundModel);
+            if (intent.getStringExtra(MedConstants.FRAGMENT_CLICK).equalsIgnoreCase("Stop")) {
+                for (int j = 0; j < SoundModelsList.size(); j++) {
+                    SoundModel soundModel = SoundModelsList.get(j);
+                    soundModel.setSoundMp3Checked(0);
+                    SoundModelsList.set(j, soundModel);
+                }
+            } else if (intent.getStringExtra(MedConstants.FRAGMENT_CLICK).equalsIgnoreCase("Cancel")) {
+                for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
+                    for (int j = 0; j < SoundModelsList.size(); j++) {
+                        if (SoundModelsList.get(j).getSoundPos() == MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos()) {
+                            SoundModel soundModel = SoundModelsList.get(j);
+                            soundModel.setSoundMp3Checked(1);
+                            SoundModelsList.set(j, soundModel);
+                        }
+                    }
+                }
             }
             categoryListAdapter.notifyDataSetChanged();
         }

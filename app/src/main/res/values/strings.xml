@@ -16,5 +16,6 @@
     <string name="TimerInterface">Timer interface</string>
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
+    <string name="select_sound">Select the page</string>
 
 </resources>

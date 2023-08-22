@@ -3,12 +3,13 @@ package com.med.meditationsoundapp.SoundModel;
 public class SoundModel {
     int SoundMp3Checked;
     int SoundIcon;
-    String SoundMp3;
+    String SoundMp3,SoundTitle;
     int SoundPos;
 
-    public SoundModel(int soundIcon, String soundMp3, int soundMp3Checked, int soundPos) {
+    public SoundModel(int soundIcon, String soundMp3, String soundTitle, int soundMp3Checked, int soundPos) {
         SoundIcon = soundIcon;
         SoundMp3 = soundMp3;
+        SoundTitle = soundTitle;
         SoundMp3Checked = soundMp3Checked;
         SoundPos = soundPos;
     }
@@ -27,6 +28,14 @@ public class SoundModel {
 
     public void setSoundMp3(String soundMp3) {
         SoundMp3 = soundMp3;
+    }
+
+    public String getSoundTitle() {
+        return SoundTitle;
+    }
+
+    public void setSoundTitle(String soundTitle) {
+        SoundTitle = soundTitle;
     }
 
     public int getSoundMp3Checked() {

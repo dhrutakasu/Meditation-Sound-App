@@ -5,13 +5,15 @@ public class SoundModel {
     int SoundIcon;
     String SoundMp3,SoundTitle;
     int SoundPos;
+    int SoundVolume;
 
-    public SoundModel(int soundIcon, String soundMp3, String soundTitle, int soundMp3Checked, int soundPos) {
+    public SoundModel(int soundIcon, String soundMp3, String soundTitle, int soundMp3Checked, int soundPos, int soundVolume) {
         SoundIcon = soundIcon;
         SoundMp3 = soundMp3;
         SoundTitle = soundTitle;
         SoundMp3Checked = soundMp3Checked;
         SoundPos = soundPos;
+        SoundVolume = soundVolume;
     }
 
     public int getSoundIcon() {
@@ -54,13 +56,23 @@ public class SoundModel {
         SoundPos = soundPos;
     }
 
+    public int getSoundVolume() {
+        return SoundVolume;
+    }
+
+    public void setSoundVolume(int soundVolume) {
+        SoundVolume = soundVolume;
+    }
+
     @Override
     public String toString() {
         return "SoundModel{" +
                 "SoundMp3Checked=" + SoundMp3Checked +
                 ", SoundIcon=" + SoundIcon +
                 ", SoundMp3='" + SoundMp3 + '\'' +
+                ", SoundTitle='" + SoundTitle + '\'' +
                 ", SoundPos=" + SoundPos +
+                ", SoundVolume=" + SoundVolume +
                 '}';
     }
 }

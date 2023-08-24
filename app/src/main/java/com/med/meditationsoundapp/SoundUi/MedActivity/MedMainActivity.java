@@ -62,7 +62,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private ViewPager PagerCategory;
     private TabLayout TabCategory;
     private ConstraintLayout ConsVolume;
-    private LinearLayout LlButtonView,LlSelectedSoundsList;
+    private LinearLayout LlButtonView, LlSelectedSoundsList;
     private DrawerLayout DrawerMain;
     private ActionBarDrawerToggle DrawerToggle;
     private NavigationView NavMain;
@@ -175,7 +175,9 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         for (int i = 0; i < SoundModelsList.size(); i++) {
             try {
                 MediaPlayer mediaPlayer = new MediaPlayer();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                float volume = (float) (1 - (Math.log(100 - SoundModelsList.get(i).getSoundVolume()) / Math.log(100)));
+                mediaPlayer.setVolume(volume, volume);
                 mediaPlayer.setDataSource(SoundModelsList.get(i).getSoundMp3());
                 mediaPlayer.setLooping(true);
 
@@ -267,13 +269,13 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                 int volumeUp = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
                 TvVolume.setText(volumeUp + "");
                 SeekVolume.setProgress(volumeUp);
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                 int volumeDown = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
                 TvVolume.setText(volumeDown + "");
                 SeekVolume.setProgress(volumeDown);
@@ -358,7 +360,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 RvSelectSound.setVisibility(View.VISIBLE);
                 IvCategoryImg.setVisibility(View.GONE);
                 PagerCategory.setVisibility(View.GONE);
-                RvSelectSound.setLayoutManager(new GridLayoutManager(context,2));
+                RvSelectSound.setLayoutManager(new GridLayoutManager(context, 2));
                 RvSelectSound.setAdapter(new SelectSoundAdapter(context, ListOfCategory, position -> {
                     PagerCategory.setCurrentItem(position);
 

@@ -165,6 +165,20 @@ public class CategoryFragment extends Fragment {
                     window.setAttributes(lp);
                 }
             }
+
+            @Override
+            public void SoundPlaysVolume(int position, int PlayerPos, int PlayerVolume) {
+//                try {
+                    SoundModelsList.get(position).setSoundVolume(PlayerVolume);
+                    float volume = (float) (1 - (Math.log(100 - PlayerVolume) / Math.log(100)));
+                    MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setVolume(volume, volume);
+                    MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start();
+//                );
+                    categoryListAdapter.notifyDataSetChanged();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+            }
         });
         RvCategoryList.setAdapter(categoryListAdapter);
     }

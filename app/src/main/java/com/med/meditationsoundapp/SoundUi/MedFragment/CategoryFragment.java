@@ -199,6 +199,10 @@ public class CategoryFragment extends Fragment {
                             SoundModel soundModel = SoundModelsList.get(j);
                             soundModel.setSoundMp3Checked(1);
                             SoundModelsList.set(j, soundModel);
+                        }else {
+                            SoundModel soundModel = SoundModelsList.get(j);
+                            soundModel.setSoundMp3Checked(0);
+                            SoundModelsList.set(j, soundModel);
                         }
                     }
                 }

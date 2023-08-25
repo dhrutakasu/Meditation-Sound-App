@@ -392,6 +392,34 @@ public class MedConstants {
         return binauralSoundsList;
     }
 
+    public static ArrayList<String> PlaylistSounds() {
+        ArrayList<String> playSoundsList = new ArrayList<>();
+        playSoundsList.add("Relaxing Coffee");
+        playSoundsList.add("Journey");
+        playSoundsList.add("Beach bar");
+        playSoundsList.add("Before the storm");
+        playSoundsList.add("Children in the Garden");
+        playSoundsList.add("Contact with nature");
+        playSoundsList.add("Asia area");
+        playSoundsList.add("Dropping in the cave");
+        playSoundsList.add("Spring time");
+        playSoundsList.add("Marine dream");
+        playSoundsList.add("Meditation nature");
+        playSoundsList.add("Meditation in the temple");
+        playSoundsList.add("Mountain cabin");
+        playSoundsList.add("Night on the docks");
+        playSoundsList.add("peace of the night");
+        playSoundsList.add("peaceful dawn");
+        playSoundsList.add("Rainy day");
+        playSoundsList.add("Relaxing rain");
+        playSoundsList.add("Relaxing on the beach");
+        playSoundsList.add("Rural atmosphere");
+        playSoundsList.add("Surfing among dolphins");
+        playSoundsList.add("The spirit of india");
+        playSoundsList.add("Wild spirit");
+        return playSoundsList;
+    }
+
     public static ArrayList<SoundModel> RelaxingCoffeeSounds() {
         ArrayList<SoundModel> coffeeSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_city_musician, BASEURL + "med_oasis_of_calm" + BASEURLEXTENSION, "Musician", 0, 76, 85);
@@ -400,6 +428,7 @@ public class MedConstants {
         coffeeSoundsList.add(soundModel);
         return coffeeSoundsList;
     }
+
     public static ArrayList<SoundModel> JourneySounds() {
         ArrayList<SoundModel> coffeeSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_river, BASEURL + "med_flowing_water_sound" + BASEURLEXTENSION, "River", 0, 29, 50);
@@ -410,6 +439,7 @@ public class MedConstants {
         coffeeSoundsList.add(soundModel);
         return coffeeSoundsList;
     }
+
     public static ArrayList<SoundModel> BeachSounds() {
         ArrayList<SoundModel> beachSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_sea, BASEURL + "med_sea_waves_sound" + BASEURLEXTENSION, "Sea Waves", 0, 36, 70);
@@ -420,6 +450,7 @@ public class MedConstants {
         beachSoundsList.add(soundModel);
         return beachSoundsList;
     }
+
     public static ArrayList<SoundModel> StormSounds() {
         ArrayList<SoundModel> stormSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_nature_strom, BASEURL + "med_storm" + BASEURLEXTENSION, "Storm", 0, 27, 80);
@@ -430,6 +461,7 @@ public class MedConstants {
         stormSoundsList.add(soundModel);
         return stormSoundsList;
     }
+
     public static ArrayList<SoundModel> ChildrenSounds() {
         ArrayList<SoundModel> childSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_city_farm, BASEURL + "med_farm" + BASEURLEXTENSION, "Farm", 0, 87, 35);
@@ -440,6 +472,7 @@ public class MedConstants {
         childSoundsList.add(soundModel);
         return childSoundsList;
     }
+
     public static ArrayList<SoundModel> ContactSounds() {
         ArrayList<SoundModel> contactSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_river, BASEURL + "med_flowing_water_sound" + BASEURLEXTENSION, "River", 0, 29, 30);
@@ -450,6 +483,7 @@ public class MedConstants {
         contactSoundsList.add(soundModel);
         return contactSoundsList;
     }
+
     public static ArrayList<SoundModel> AsianSounds() {
         ArrayList<SoundModel> asianSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_river, BASEURL + "med_flowing_water_sound" + BASEURLEXTENSION, "River", 0, 29, 40);
@@ -460,6 +494,7 @@ public class MedConstants {
         asianSoundsList.add(soundModel);
         return asianSoundsList;
     }
+
     public static ArrayList<SoundModel> CaveSounds() {
         ArrayList<SoundModel> caveSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_drops, BASEURL + "med_dripping_water_sound" + BASEURLEXTENSION, "Dripping", 0, 35, 90);
@@ -468,6 +503,7 @@ public class MedConstants {
         caveSoundsList.add(soundModel);
         return caveSoundsList;
     }
+
     public static ArrayList<SoundModel> SpringSounds() {
         ArrayList<SoundModel> springSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_river, BASEURL + "med_flowing_water_sound" + BASEURLEXTENSION, "River", 0, 29, 50);
@@ -476,6 +512,7 @@ public class MedConstants {
         springSoundsList.add(soundModel);
         return springSoundsList;
     }
+
     public static ArrayList<SoundModel> DreamSounds() {
         ArrayList<SoundModel> dreamSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_ocean_wave, BASEURL + "med_ocean_waves_sound" + BASEURLEXTENSION, "Ocean  Waves", 0, 31, 50);
@@ -486,6 +523,7 @@ public class MedConstants {
         dreamSoundsList.add(soundModel);
         return dreamSoundsList;
     }
+
     public static ArrayList<SoundModel> MeditationNatureSounds() {
         ArrayList<SoundModel> meditationNatureSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_waterfall, BASEURL + "med_waterfall_sound" + BASEURLEXTENSION, "Waterfall", 0, 34, 50);
@@ -496,6 +534,7 @@ public class MedConstants {
         meditationNatureSoundsList.add(soundModel);
         return meditationNatureSoundsList;
     }
+
     public static ArrayList<SoundModel> MeditationTempleSounds() {
         ArrayList<SoundModel> meditationTempleSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_traditional_bowls, BASEURL + "med_bowl" + BASEURLEXTENSION, "Bowl", 0, 75, 50);
@@ -508,6 +547,7 @@ public class MedConstants {
         meditationTempleSoundsList.add(soundModel);
         return meditationTempleSoundsList;
     }
+
     public static ArrayList<SoundModel> CabinSounds() {
         ArrayList<SoundModel> cabinSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_wind_mountain, BASEURL + "med_air_mountain" + BASEURLEXTENSION, "Mountain", 0, 52, 20);
@@ -516,6 +556,7 @@ public class MedConstants {
         cabinSoundsList.add(soundModel);
         return cabinSoundsList;
     }
+
     public static ArrayList<SoundModel> DockSounds() {
         ArrayList<SoundModel> dockSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_relax_sax, BASEURL + "med_sax" + BASEURLEXTENSION, "Sax", 0, 66, 80);
@@ -524,6 +565,7 @@ public class MedConstants {
         dockSoundsList.add(soundModel);
         return dockSoundsList;
     }
+
     public static ArrayList<SoundModel> PeaceSounds() {
         ArrayList<SoundModel> peaceSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_night_whippoorwill, BASEURL + "med_birds3" + BASEURLEXTENSION, "Nightingale", 0, 41, 65);
@@ -532,6 +574,7 @@ public class MedConstants {
         peaceSoundsList.add(soundModel);
         return peaceSoundsList;
     }
+
     public static ArrayList<SoundModel> RainySounds() {
         ArrayList<SoundModel> rainySoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_heavy_rain, BASEURL + "med_heavy_rain" + BASEURLEXTENSION, "Heavy Rain", 0, 5, 50);
@@ -540,6 +583,7 @@ public class MedConstants {
         rainySoundsList.add(soundModel);
         return rainySoundsList;
     }
+
     public static ArrayList<SoundModel> RelaxRainSounds() {
         ArrayList<SoundModel> relaxRainSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_light_rain, BASEURL + "med_light_rain" + BASEURLEXTENSION, "Light Rain", 0, 4, 80);
@@ -548,6 +592,7 @@ public class MedConstants {
         relaxRainSoundsList.add(soundModel);
         return relaxRainSoundsList;
     }
+
     public static ArrayList<SoundModel> RealxBeachSounds() {
         ArrayList<SoundModel> realxBeachSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_water_ocean_wave, BASEURL + "med_ocean_waves_sound" + BASEURLEXTENSION, "Ocean  Waves", 0, 31, 65);
@@ -556,6 +601,7 @@ public class MedConstants {
         realxBeachSoundsList.add(soundModel);
         return realxBeachSoundsList;
     }
+
     public static ArrayList<SoundModel> RuralSounds() {
         ArrayList<SoundModel> ruralSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_country_birds2, BASEURL + "med_birds2" + BASEURLEXTENSION, "Birds", 0, 13, 10);
@@ -566,6 +612,7 @@ public class MedConstants {
         ruralSoundsList.add(soundModel);
         return ruralSoundsList;
     }
+
     public static ArrayList<SoundModel> DolphinsSounds() {
         ArrayList<SoundModel> dolphinsSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_ocean_whale, BASEURL + "med_whale_sound" + BASEURLEXTENSION, "med_whale_sound", 0, 23, 30);
@@ -574,6 +621,7 @@ public class MedConstants {
         dolphinsSoundsList.add(soundModel);
         return dolphinsSoundsList;
     }
+
     public static ArrayList<SoundModel> IndiaSounds() {
         ArrayList<SoundModel> indiaSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_traditional_sitar, BASEURL + "med_sitar" + BASEURLEXTENSION, "Sitar", 0, 71, 75);
@@ -584,6 +632,7 @@ public class MedConstants {
         indiaSoundsList.add(soundModel);
         return indiaSoundsList;
     }
+
     public static ArrayList<SoundModel> WildSounds() {
         ArrayList<SoundModel> wildSoundsList = new ArrayList<>();
         SoundModel soundModel = new SoundModel(R.drawable.ic_relax_native, BASEURL + "med_native" + BASEURLEXTENSION, "Native", 0, 68, 70);

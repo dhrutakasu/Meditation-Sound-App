@@ -2,6 +2,7 @@ package com.med.meditationsoundapp.SoundDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -11,10 +12,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundAds.MedAd_Native;
+import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 public class SoundSettingDialog extends Dialog {
     private final MedMainActivity activity;
@@ -28,7 +32,6 @@ public class SoundSettingDialog extends Dialog {
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.dialog_setting);
-        SwitchCompat switchPower = (SwitchCompat) findViewById(R.id.SwitchPower);
         SwitchCompat switchNight = (SwitchCompat) findViewById(R.id.SwitchNight);
         SwitchCompat switchDevice = (SwitchCompat) findViewById(R.id.SwitchDevice);
         Spinner spinnerCountdown = (Spinner) findViewById(R.id.SpinnerCountdown);
@@ -51,7 +54,21 @@ public class SoundSettingDialog extends Dialog {
         arrayTimerInterfaceAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTimerInterface.setAdapter(arrayTimerInterfaceAdapter);
 
+        spinnerCountdown.setSelection(new MedPref(getContext()).getInt(MedPref.INT_COUNT_DOWN, 0));
+        spinnerDefaultVolume.setSelection(new MedPref(getContext()).getInt(MedPref.INT_DEAFULT_VOLUME, 1));
+        spinnerTimerInterface.setSelection(new MedPref(getContext()).getInt(MedPref.INT_TIMER_INTERFACE, 0));
+        switchNight.setChecked(new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false));
+        switchDevice.setChecked(new MedPref(getContext()).getBoolean(MedPref.BOOL_DEVICE, true));
+
         IvOkDialogSetting.setOnClickListener(view -> {
+            new MedPref(getContext()).putInt(MedPref.INT_COUNT_DOWN, spinnerCountdown.getSelectedItemPosition());
+            new MedPref(getContext()).putInt(MedPref.INT_DEAFULT_VOLUME, spinnerDefaultVolume.getSelectedItemPosition());
+            new MedPref(getContext()).putInt(MedPref.INT_TIMER_INTERFACE, spinnerTimerInterface.getSelectedItemPosition());
+            new MedPref(getContext()).putBoolean(MedPref.BOOL_NIGHT, switchNight.isChecked());
+            new MedPref(getContext()).putBoolean(MedPref.BOOL_DEVICE, switchDevice.isChecked());
+
+            Intent intent = new Intent(MedConstants.BROADCAST_SETTING);
+            LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
             dismiss();
         });
         TvCancelDialogSetting.setOnClickListener(view -> {

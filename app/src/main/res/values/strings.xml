@@ -19,5 +19,8 @@
     <string name="select_sound">Select the page</string>
     <string name="select_ambience">Select the ambience</string>
     <string name="play_all">Play All</string>
+    <string name="play_all_msg">Select the duration of each ambience</string>
+    <string name="play">Play</string>
+    <string name="Empty_list">Empty List</string>
 
 </resources>

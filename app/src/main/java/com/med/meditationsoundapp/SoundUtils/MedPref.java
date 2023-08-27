@@ -1,10 +1,16 @@
-package com.med.meditationsoundapp.SoundConstants;
+package com.med.meditationsoundapp.SoundUtils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 public class MedPref {
     public static final String MED_WALKTHROUGH = "APP_WALKTHROUGH";
+    public static final String INT_DURATION = "INT_DURATION";
+    public static final String INT_COUNT_DOWN = "INT_COUNT_DOWN";
+    public static final String INT_DEAFULT_VOLUME = "INT_DEAFULT_VOLUME";
+    public static final String INT_TIMER_INTERFACE = "INT_TIMER_INTERFACE";
+    public static final String BOOL_NIGHT = "BOOL_NIGHT";
+    public static final String BOOL_DEVICE = "BOOL_DEVICE";
     private SharedPreferences sharedPreferences;
     static final String MyPref = "MedPref";
 

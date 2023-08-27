@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class MedSplashActivity extends AppCompatActivity {
 
-    private long seconds = 3;
+    private long seconds = 1;
     private long secondsRemaining;
 
     @Override

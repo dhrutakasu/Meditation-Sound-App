@@ -20,7 +20,7 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.med.meditationsoundapp.R;
-import com.med.meditationsoundapp.SoundConstants.MedPref;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 public class MedAd_Native {
     private static MedAd_Native medAdNative;

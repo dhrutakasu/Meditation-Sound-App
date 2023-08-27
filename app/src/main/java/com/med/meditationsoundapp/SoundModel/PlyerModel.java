@@ -4,7 +4,7 @@ import android.media.MediaPlayer;
 
 public class PlyerModel {
     MediaPlayer player;
-    int PlayerPos;
+    int PlayerPos,PlayerVolume;
     String PlayerName;
 
     public MediaPlayer getPlayer() {
@@ -21,6 +21,14 @@ public class PlyerModel {
 
     public void setPlayerPos(int playerPos) {
         PlayerPos = playerPos;
+    }
+
+    public int getPlayerVolume() {
+        return PlayerVolume;
+    }
+
+    public void setPlayerVolume(int playerVolume) {
+        PlayerVolume = playerVolume;
     }
 
     public String getPlayerName() {

@@ -7,14 +7,48 @@
     android:layout_marginEnd="@dimen/_25sdp"
     android:background="@color/white">
 
+    <ImageView
+        android:id="@+id/IvSetTimer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:orientation="horizontal"
+        android:src="@drawable/ic_set_timer_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/IvChangeInterface"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_change_interface"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LlButtonTypes" />
+
+    <ImageView
+        android:id="@+id/IvOkDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:layout_marginEnd="@dimen/_22sdp"
+        android:src="@drawable/ic_ok_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/IvChangeInterface" />
+
     <LinearLayout
         android:id="@+id/LlTimerOption"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/IvSetTimer">
 
         <TextView
             android:id="@+id/TvSetTimer"
@@ -41,7 +75,57 @@
             android:textSize="@dimen/_14sdp" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/LlButtonTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/LlTimePickerDialog">
+
+        <ImageView
+            android:id="@+id/IvMinus"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_toStartOf="@+id/TvTime"
+            android:background="@drawable/button_bg"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_minus"
+            android:tint="@color/white"  />
+
+        <TextView
+            android:id="@+id/TvTime"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/dilaog_bg"
+            android:layout_gravity="center"
+            android:layout_weight="0.5"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="00:00"
+            android:padding="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/IvPlus"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_toEndOf="@+id/TvTime"
+            android:background="@drawable/button_bg"
+            android:padding="@dimen/_8sdp"
+            android:src="@drawable/ic_add"
+            android:tint="@color/white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/LlTimePickerDialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,30 +137,13 @@
             android:id="@+id/TimePickerReminder"
             style="@style/TimePicker"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:numbersSelectorColor="@color/app_main_color" />
-    </LinearLayout>
+            android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/IvChangeInterface"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_change_interface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/LlTimePickerDialog" />
-
-    <ImageView
-        android:id="@+id/IvOkDialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:layout_marginEnd="@dimen/_22sdp"
-        android:src="@drawable/ic_ok_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IvChangeInterface" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RvButtonsInterface"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/TvCancelDialog"

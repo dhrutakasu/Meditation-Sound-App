@@ -16,7 +16,7 @@ import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.med.meditationsoundapp.SoundConstants.MedPref;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 public class MedAd_Interstitial {
     static int OnClickCount = 1;

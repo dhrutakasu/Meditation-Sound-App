@@ -38,6 +38,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.IvCategoryImg.setImageResource(soundModelsList.get(position).getSoundIcon());
         holder.SeekCategoryVolume.setMax(100);
+        System.out.println("-- -- -- - - title : "+soundModelsList.get(position).getSoundMp3Checked()+" -- vol : "+soundModelsList.get(position).getSoundVolume());
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
             holder.TvCategoryVolume.setText(String.valueOf(soundModelsList.get(position).getSoundVolume()).toString());

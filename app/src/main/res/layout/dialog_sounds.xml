@@ -7,11 +7,12 @@
     android:layout_marginEnd="@dimen/_25sdp"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/LlSelectSoundTitle"
+    <ImageView
+        android:id="@+id/IvSelectSoundTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_select_sounds_title"
+        android:src="@drawable/ic_select_sounds_title"
+        android:adjustViewBounds="true"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,5 +61,5 @@
         android:textSize="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
         app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
-        app:layout_constraintTop_toBottomOf="@id/LlSelectSoundTitle" />
+        app:layout_constraintTop_toBottomOf="@id/IvSelectSoundTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

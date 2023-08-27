@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
-import com.med.meditationsoundapp.SoundConstants.MedPref;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 public class MedAd_Banner {
 

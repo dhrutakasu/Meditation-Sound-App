@@ -7,11 +7,12 @@
     android:layout_marginEnd="@dimen/_25sdp"
     android:background="@color/white">
 
-    <LinearLayout
-        android:id="@+id/LlSettingTitle"
+    <ImageView
+        android:id="@+id/IvSettingTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_setting_title"
+        android:src="@drawable/ic_setting_title"
+        android:adjustViewBounds="true"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,43 +20,17 @@
         app:layout_constraintWidth_percent="0.5" />
 
     <TextView
-        android:id="@+id/TvPowerSaving"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_26sdp"
-        android:gravity="center_vertical"
-        android:text="@string/powerSaving"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_15sdp"
-        app:layout_constraintEnd_toStartOf="@+id/SwitchPower"
-        app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
-        app:layout_constraintTop_toBottomOf="@id/LlSettingTitle" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/SwitchPower"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:checked="true"
-        android:thumb="@drawable/thumb_selector"
-        app:layout_constraintBottom_toBottomOf="@id/TvPowerSaving"
-        app:layout_constraintEnd_toEndOf="@id/guideDialogEnds"
-        app:layout_constraintTop_toTopOf="@id/TvPowerSaving"
-        app:track="@drawable/track_selector" />
-
-    <TextView
         android:id="@+id/TvNightMode"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_10sdp"
         android:gravity="center_vertical"
         android:text="@string/NightMode"
         android:textColor="@color/black"
         android:textSize="@dimen/_15sdp"
         app:layout_constraintEnd_toStartOf="@+id/SwitchNight"
         app:layout_constraintStart_toStartOf="@id/guideDialogStarts"
-        app:layout_constraintTop_toBottomOf="@id/TvPowerSaving" />
+        app:layout_constraintTop_toBottomOf="@id/IvSettingTitle" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SwitchNight"

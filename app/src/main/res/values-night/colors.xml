@@ -5,12 +5,12 @@
     <color name="purple_700">#F47500</color>
     <color name="teal_200">#F47500</color>
     <color name="teal_700">#F47500</color>
-    <color name="black">#FF000000</color>
+    <color name="white">#FF000000</color>
     <color name="LightBlack">#66000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FFFFFFFF</color>
     <color name="seek_bar_background">#ababab</color>
     <color name="app_main_color">#F47500</color>
-    <color name="app_main_color_light10">#1AF47500</color>
+    <color name="app_main_color_light10">#1AFFFFFF</color>
     <color name="app_main_color_light20">#33F47500</color>
     <color name="purple_light">#FF993D</color>
     <color name="app_main_color_gray">#4E4E4E</color>

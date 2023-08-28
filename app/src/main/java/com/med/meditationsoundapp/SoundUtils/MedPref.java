@@ -11,6 +11,12 @@ public class MedPref {
     public static final String INT_TIMER_INTERFACE = "INT_TIMER_INTERFACE";
     public static final String BOOL_NIGHT = "BOOL_NIGHT";
     public static final String BOOL_DEVICE = "BOOL_DEVICE";
+    public static final String TIMER = "TIMER";
+    public static final String TIMER_BUTTON = "TIMER_BUTTON";
+    public static final String START_TIMER = "START_TIMER";
+    public static final String HOUR = "HOUR";
+    public static final String MINUTE = "MINUTE";
+    public static final String SET_TIMER = "SET_TIMER";
     private SharedPreferences sharedPreferences;
     static final String MyPref = "MedPref";
 

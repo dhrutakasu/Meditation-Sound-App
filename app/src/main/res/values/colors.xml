@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="LightBlack">#66000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="Onlywhite">#FFFFFFFF</color>
     <color name="seek_bar_background">#ababab</color>
     <color name="app_main_color">#5622EB</color>
     <color name="app_main_color_light10">#1A5622EB</color>

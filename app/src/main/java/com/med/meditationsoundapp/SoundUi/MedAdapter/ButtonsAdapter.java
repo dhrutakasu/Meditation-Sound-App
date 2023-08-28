@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundModel.ButtonsModel;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.MyViewHo
     private final Context context;
     private final ArrayList<ButtonsModel> buttonsModels;
     private final setButtonsListeners setButtonsListeners;
-    public static int IsSelected=-1;
+    public static int IsSelected = -1;
 
     public ButtonsAdapter(Context context, ArrayList<ButtonsModel> timerArr, setButtonsListeners setButtonsListeners) {
         this.context = context;
@@ -41,16 +42,16 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.MyViewHo
         } else {
             holder.TvButtonTitle.setText(buttonsModels.get(position).getButtons() + "m");
         }
-        if (IsSelected == position) {
+        if (buttonsModels.get(position).getSelected() == 1) {
             holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.app_main_color));
         } else {
-            holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.app_main_color_center));
+            holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.purple_light));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setButtonsListeners.ButtonsClick(position);
-                IsSelected=position;
+                IsSelected = position;
             }
         });
     }

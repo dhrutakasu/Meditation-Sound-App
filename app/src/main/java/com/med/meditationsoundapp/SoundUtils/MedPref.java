@@ -17,6 +17,7 @@ public class MedPref {
     public static final String HOUR = "HOUR";
     public static final String MINUTE = "MINUTE";
     public static final String SET_TIMER = "SET_TIMER";
+    public static final String FAVOURITE = "FAVOURITE";
     private SharedPreferences sharedPreferences;
     static final String MyPref = "MedPref";
 

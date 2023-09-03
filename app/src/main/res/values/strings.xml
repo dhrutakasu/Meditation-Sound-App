@@ -22,5 +22,6 @@
     <string name="play_all_msg">Select the duration of each ambience</string>
     <string name="play">Play</string>
     <string name="Empty_list">Empty List</string>
+    <string name="favourite_msg">Enter ambiance name: </string>
 
 </resources>

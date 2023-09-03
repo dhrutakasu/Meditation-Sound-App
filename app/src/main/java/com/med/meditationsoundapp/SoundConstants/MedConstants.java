@@ -32,6 +32,8 @@ public class MedConstants {
     public static final String BROADCAST_FRAGMENT = "BROADCAST_FRAGMENT";
     public static final String FRAGMENT_CLICK = "FRAGMENT_CLICK";
     public static String SelectedSounds = "SelectedSounds";
+    public static boolean IsNotificationFavorite = false;
+    public static String IsNotificationFavoriteTitle="";
     private static String BASEURL = "https://anshinfotech.in/sound/";
     private static String BASEURLEXTENSION = ".mp3";
     public static ArrayList<PlyerModel> mediaPlayerArrayList = new ArrayList<>();
@@ -701,6 +703,7 @@ public class MedConstants {
 
         return formattedTime;
     }
+
     public static int convertToMinutes(String time) {
         String[] parts = time.split(":");
         if (parts.length == 2) {

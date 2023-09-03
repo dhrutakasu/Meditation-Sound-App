@@ -9,6 +9,7 @@
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/ic_add.xml" value="0.121" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/ic_count_bg.xml" value="0.114" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/ic_minus.xml" value="0.121" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/ic_stop.xml" value="0.121" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/seek_bar.xml" value="0.18" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/seek_progress.xml" value="0.121" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/sound_dlalog_bg.xml" value="0.121" />
@@ -16,15 +17,24 @@
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/timer_bg.xml" value="0.121" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/drawable/track_selector.xml" value="0.121" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/activity_med_main.xml" value="0.18" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/activity_med_splash.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/app_bar_main.xml" value="0.1" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/app_layout_header.xml" value="0.15" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/content_main.xml" value="0.18" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/custom_notification_layout.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_exit.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_favourite.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_max_sound.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_play_all.xml" value="0.25" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_progress.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_reminder.xml" value="0.22" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_selected_sound.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_setting.xml" value="0.67" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/dialog_sounds.xml" value="0.18" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/drawer_header.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/fragment_category.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/fragment_faq.xml" value="0.2" />
+        <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/fragment_privacy_policy.xml" value="0.2" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/layout_item_buttons.xml" value="0.25" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/layout_item_category.xml" value="0.67" />
         <entry key="..\:/Dhruta/Dhruta project/Client/Hiren Radadiya/Meditation Sound App/MeditationSoundApp/app/src/main/res/layout/layout_item_custom.xml" value="0.25" />

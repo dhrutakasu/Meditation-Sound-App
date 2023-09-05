@@ -11,7 +11,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -61,15 +60,6 @@ public class SoundSettingDialog extends Dialog {
         switchNight.setChecked(new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false));
         switchDevice.setChecked(new MedPref(getContext()).getBoolean(MedPref.BOOL_DEVICE, true));
 
-        switchNight.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            }
-
-            activity.recreate();
-        });
         IvOkDialogSetting.setOnClickListener(view -> {
             new MedPref(getContext()).putInt(MedPref.INT_COUNT_DOWN, spinnerCountdown.getSelectedItemPosition());
             new MedPref(getContext()).putInt(MedPref.INT_DEAFULT_VOLUME, spinnerDefaultVolume.getSelectedItemPosition());

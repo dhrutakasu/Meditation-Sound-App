@@ -14,12 +14,12 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SelectSoundAdapter extends RecyclerView.Adapter<SelectSoundAdapter.MyViewHolder> {
+public class SelectFavSoundAdapter extends RecyclerView.Adapter<SelectFavSoundAdapter.MyViewHolder> {
     private final Context context;
-    private final String[] soundModelsList;
+    private final ArrayList<FavModel> soundModelsList;
     private final setSelectionSoundPlay selectionSoundPlay;
 
-    public SelectSoundAdapter(Context context, String[] soundModelsList, setSelectionSoundPlay soundPlay) {
+    public SelectFavSoundAdapter(Context context, ArrayList<FavModel> soundModelsList, setSelectionSoundPlay soundPlay) {
         this.context = context;
         this.soundModelsList = soundModelsList;
         this.selectionSoundPlay = soundPlay;
@@ -34,7 +34,7 @@ public class SelectSoundAdapter extends RecyclerView.Adapter<SelectSoundAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.TvCategoryTitle.setText(soundModelsList[position].toString());
+        holder.TvCategoryTitle.setText(soundModelsList.get(position).getName().toString());
         holder.TvCategoryTitle.setSelected(true);
 
         holder.itemView.setOnClickListener(view -> selectionSoundPlay.SoundSelect(position));
@@ -46,7 +46,7 @@ public class SelectSoundAdapter extends RecyclerView.Adapter<SelectSoundAdapter.
 
     @Override
     public int getItemCount() {
-        return soundModelsList.length;
+        return soundModelsList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

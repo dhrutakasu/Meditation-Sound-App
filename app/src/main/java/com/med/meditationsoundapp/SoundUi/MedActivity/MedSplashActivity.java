@@ -6,9 +6,11 @@ import androidx.collection.ArraySet;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
@@ -26,6 +28,10 @@ public class MedSplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        }
         setContentView(R.layout.activity_med_splash);
         MedInitViews();
         MedInitListeners();

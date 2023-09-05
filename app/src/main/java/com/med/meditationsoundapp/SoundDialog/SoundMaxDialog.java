@@ -6,12 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.med.meditationsoundapp.R;
-import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
-import com.med.meditationsoundapp.SoundUi.MedAdapter.SelectSoundAdapter;
 
 public class SoundMaxDialog extends Dialog {
     private final DialogDismiss dialogDismiss;

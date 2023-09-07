@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_25sdp"
     android:layout_marginEnd="@dimen/_25sdp"
+    android:id="@+id/ConstSelectAmbience"
     android:background="@drawable/sound_dialog_bg">
 
 
@@ -28,8 +29,10 @@
         android:padding="@dimen/_10sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IvSelectAmbienceTitle">
+        app:layout_constraintTop_toBottomOf="@id/IvSelectAmbienceTitle"
+        app:layout_constraintVertical_bias="0.0">
 
         <Spinner
             android:id="@+id/SpinnerPlayAll"

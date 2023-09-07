@@ -2,6 +2,7 @@ package com.med.meditationsoundapp.SoundDialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -26,6 +27,8 @@ import com.med.meditationsoundapp.SoundUtils.MedPref;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,24 +52,60 @@ public class SoundReminderDialog extends Dialog {
         LinearLayout LlTimerOption = (LinearLayout) findViewById(R.id.LlTimerOption);
         RelativeLayout LlButtonTypes = (RelativeLayout) findViewById(R.id.LlButtonTypes);
         TimePicker TimePickerReminder = (TimePicker) findViewById(R.id.TimePickerReminder);
+        TimePicker TimePickerReminderDark = (TimePicker) findViewById(R.id.TimePickerReminderDark);
         RecyclerView RvButtonsInterface = (RecyclerView) findViewById(R.id.RvButtonsInterface);
+        ConstraintLayout ConstSetTimer = (ConstraintLayout) findViewById(R.id.ConstSetTimer);
         TextView TvSetTimer = (TextView) findViewById(R.id.TvSetTimer);
         TextView TvStopTimer = (TextView) findViewById(R.id.TvStopTimer);
         ImageView IvChangeInterface = (ImageView) findViewById(R.id.IvChangeInterface);
+        ImageView IvSetTimer = (ImageView) findViewById(R.id.IvSetTimer);
         ImageView IvMinus = (ImageView) findViewById(R.id.IvMinus);
         ImageView IvPlus = (ImageView) findViewById(R.id.IvPlus);
         TextView TvTime = (TextView) findViewById(R.id.TvTime);
         ImageView IvOkDialog = (ImageView) findViewById(R.id.IvOkDialog);
         TextView TvCancelDialog = (TextView) findViewById(R.id.TvCancelDialog);
+        if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            IvSetTimer.setImageResource(R.drawable.ic_set_timer_title_dark);
+            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light_dark));
+            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color_dark));
+            IvMinus.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_center_dark), PorterDuff.Mode.SRC_IN);
+            IvPlus.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_center_dark), PorterDuff.Mode.SRC_IN);
+            TvTime.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_light10_dark), PorterDuff.Mode.SRC_IN);
+            ConstSetTimer.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.black), PorterDuff.Mode.SRC_IN);
+            IvOkDialog.setImageResource(R.drawable.ic_ok_btn_dark);
+            TvCancelDialog.setTextColor(ContextCompat.getColor(getContext(), R.color.black_dark));
+            TimePickerReminderDark.setVisibility(View.VISIBLE);
+            TimePickerReminder.setVisibility(View.GONE);
+        } else {
+            IvSetTimer.setImageResource(R.drawable.ic_set_timer_title);
+            ConstSetTimer.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.black_dark), PorterDuff.Mode.SRC_IN);
+            IvOkDialog.setImageResource(R.drawable.ic_ok_btn);
+            TvCancelDialog.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
+            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            IvMinus.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_center), PorterDuff.Mode.SRC_IN);
+            IvPlus.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_center), PorterDuff.Mode.SRC_IN);
+            TvTime.getBackground().setColorFilter(ContextCompat.getColor(getContext(), R.color.app_main_color_light10), PorterDuff.Mode.SRC_IN);
 
-        TimePickerReminder.setIs24HourView(Boolean.TRUE);
-        if (new MedPref(getContext()).getInt(MedPref.INT_TIMER_INTERFACE, 0) == 0) {
+            TimePickerReminderDark.setVisibility(View.GONE);
             TimePickerReminder.setVisibility(View.VISIBLE);
+        }
+        TimePickerReminder.setIs24HourView(Boolean.TRUE);
+        TimePickerReminderDark.setIs24HourView(Boolean.TRUE);
+        if (new MedPref(getContext()).getInt(MedPref.INT_TIMER_INTERFACE, 0) == 0) {
+            if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                TimePickerReminderDark.setVisibility(View.VISIBLE);
+                TimePickerReminder.setVisibility(View.GONE);
+            } else {
+                TimePickerReminderDark.setVisibility(View.GONE);
+                TimePickerReminder.setVisibility(View.VISIBLE);
+            }
             LlTimerOption.setVisibility(View.VISIBLE);
             RvButtonsInterface.setVisibility(View.GONE);
             LlButtonTypes.setVisibility(View.GONE);
         } else {
             TimePickerReminder.setVisibility(View.GONE);
+            TimePickerReminderDark.setVisibility(View.GONE);
             LlTimerOption.setVisibility(View.GONE);
             RvButtonsInterface.setVisibility(View.VISIBLE);
             LlButtonTypes.setVisibility(View.VISIBLE);
@@ -93,17 +132,30 @@ public class SoundReminderDialog extends Dialog {
         buttonsModel = new ButtonsModel(6, 0);
         buttonsModelArrayList.add(buttonsModel);
         TxColor = new MedPref(getContext()).getInt(MedPref.START_TIMER, 0);
-        if (TxColor == 0) {
-            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
-            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+        if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            if (TxColor == 0) {
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light_dark));
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color_dark));
+            } else {
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light_dark));
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color_dark));
+            }
         } else {
-            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
-            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            if (TxColor == 0) {
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            } else {
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            }
         }
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             TimePickerReminder.setHour(new MedPref(getContext()).getInt(MedPref.HOUR, 0));
             TimePickerReminder.setMinute(new MedPref(getContext()).getInt(MedPref.MINUTE, 0));
+            TimePickerReminderDark.setHour(new MedPref(getContext()).getInt(MedPref.HOUR, 0));
+            TimePickerReminderDark.setMinute(new MedPref(getContext()).getInt(MedPref.MINUTE, 0));
         }
         TxEdt = new MedPref(getContext()).getInt(MedPref.TIMER, 0);
         TvTime.setText(MedConstants.convertToTimeString(String.valueOf(TxEdt)));
@@ -196,16 +248,24 @@ public class SoundReminderDialog extends Dialog {
 
         TvSetTimer.setOnClickListener(view -> {
             TxColor = 0;
-
-            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
-            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light_dark));
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color_dark));
+            } else {
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            }
         });
 
         TvStopTimer.setOnClickListener(view -> {
             TxColor = 1;
-
-            TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
-            TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light_dark));
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color_dark));
+            } else {
+                TvStopTimer.setBackgroundColor(getContext().getResources().getColor(R.color.purple_light));
+                TvSetTimer.setBackgroundColor(getContext().getResources().getColor(R.color.app_main_color));
+            }
         });
 
         IvOkDialog.setOnClickListener(view -> {
@@ -214,8 +274,13 @@ public class SoundReminderDialog extends Dialog {
             new MedPref(getContext()).putInt(MedPref.TIMER_BUTTON, TimerButtons);
             new MedPref(getContext()).putBoolean(MedPref.SET_TIMER, true);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                new MedPref(getContext()).putInt(MedPref.HOUR, TimePickerReminder.getHour());
-                new MedPref(getContext()).putInt(MedPref.MINUTE, TimePickerReminder.getMinute());
+                if (new MedPref(getContext()).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    new MedPref(getContext()).putInt(MedPref.HOUR, TimePickerReminderDark.getHour());
+                    new MedPref(getContext()).putInt(MedPref.MINUTE, TimePickerReminderDark.getMinute());
+                } else {
+                    new MedPref(getContext()).putInt(MedPref.HOUR, TimePickerReminder.getHour());
+                    new MedPref(getContext()).putInt(MedPref.MINUTE, TimePickerReminder.getMinute());
+                }
             }
             dialogDismiss.DismissListener(this);
         });

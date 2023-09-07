@@ -18,7 +18,22 @@
         <item name="android:headerAmPmTextAppearance">@style/TimeTextAppearance</item>
     </style>
 
+    <style name="TimePicker_dark" parent="android:Widget.Material.TimePicker">
+        <item name="android:headerBackground">@color/app_main_color_center_dark</item>
+        <item name="android:numbersTextColor">@color/black_dark</item>
+        <item name="android:timePickerMode">clock</item>
+        <item name="android:numbersSelectorColor">@color/app_main_color_center_dark</item>
+        <item name="android:numbersBackgroundColor">@color/app_main_color_light20_dark</item>
+        <item name="android:background">@color/white_dark</item>
+        <item name="android:numbersInnerTextColor" tools:targetApi="m">@color/black_dark</item>
+        <item name="android:headerTimeTextAppearance">@style/TimeTextAppearance_dark</item>
+        <item name="android:headerAmPmTextAppearance">@style/TimeTextAppearance_dark</item>
+    </style>
+
     <style name="TimeTextAppearance">
         <item name="android:textColor">@color/white</item>
+    </style>
+    <style name="TimeTextAppearance_dark">
+        <item name="android:textColor">@color/white_dark</item>
     </style>
 </resources>

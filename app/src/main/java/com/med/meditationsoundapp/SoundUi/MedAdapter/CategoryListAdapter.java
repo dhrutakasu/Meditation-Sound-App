@@ -1,6 +1,7 @@
 package com.med.meditationsoundapp.SoundUi.MedAdapter;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,12 @@ import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundModel.SoundModel;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.MyViewHolder> {
@@ -38,7 +41,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.IvCategoryImg.setImageResource(soundModelsList.get(position).getSoundIcon());
         holder.SeekCategoryVolume.setMax(100);
-        System.out.println("-- -- -- - - title : "+soundModelsList.get(position).getSoundMp3Checked()+" -- vol : "+soundModelsList.get(position).getSoundVolume());
+        System.out.println("-- -- -- - - title : " + soundModelsList.get(position).getSoundMp3Checked() + " -- vol : " + soundModelsList.get(position).getSoundVolume());
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
             holder.TvCategoryVolume.setText(String.valueOf(soundModelsList.get(position).getSoundVolume()).toString());
@@ -50,7 +53,15 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.TvCategoryVolume.setVisibility(View.GONE);
             holder.SeekCategoryVolume.setVisibility(View.GONE);
         }
-
+        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
+            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+            holder.TvCategoryVolume.setTextColor(context.getResources().getColor(R.color.black_dark));
+        } else {
+            holder.TvCategoryVolume.setTextColor(context.getResources().getColor(R.color.black));
+            holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked);
+            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         holder.IvCategoryImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +82,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("----- - - -seek : "+seekBar.getProgress());
+                System.out.println("----- - - -seek : " + seekBar.getProgress());
                 setSoundPlay.SoundPlaysVolume(position, soundModelsList.get(position).getSoundPos(), seekBar.getProgress());
             }
         });

@@ -13,6 +13,7 @@ import com.med.meditationsoundapp.SoundUtils.MedPref;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,10 +43,19 @@ public class ButtonsAdapter extends RecyclerView.Adapter<ButtonsAdapter.MyViewHo
         } else {
             holder.TvButtonTitle.setText(buttonsModels.get(position).getButtons() + "m");
         }
-        if (buttonsModels.get(position).getSelected() == 1) {
-            holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.app_main_color));
+        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+
+            if (buttonsModels.get(position).getSelected() == 1) {
+                holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.app_main_color_dark));
+            } else {
+                holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.purple_light_dark));
+            }
         } else {
-            holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.purple_light));
+            if (buttonsModels.get(position).getSelected() == 1) {
+                holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.app_main_color));
+            } else {
+                holder.ConsButton.setBackgroundTintList(context.getResources().getColorStateList(R.color.purple_light));
+            }
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

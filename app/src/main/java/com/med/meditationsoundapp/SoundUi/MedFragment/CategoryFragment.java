@@ -1,11 +1,9 @@
 package com.med.meditationsoundapp.SoundUi.MedFragment;
 
-import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,28 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundDialog.SoundMaxDialog;
-import com.med.meditationsoundapp.SoundDialog.SoundReminderDialog;
 import com.med.meditationsoundapp.SoundModel.SoundModel;
-import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
+import com.med.meditationsoundapp.SoundService.MediaPlayerService;
 import com.med.meditationsoundapp.SoundUi.MedAdapter.CategoryListAdapter;
 import com.med.meditationsoundapp.SoundUi.MedAdapter.CustomAdapter;
 import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -55,6 +47,8 @@ public class CategoryFragment extends Fragment {
     private ArrayList<SoundModel> SoundModelsList;
     private CategoryListAdapter categoryListAdapter;
     private CustomAdapter customAdapter;
+    private ImageView IvLineBar;
+    private ConstraintLayout ConstCategoryFarg;
 
     public static CategoryFragment newInstance(String category, int position) {
         CategoryFragment fragment = new CategoryFragment();
@@ -89,6 +83,8 @@ public class CategoryFragment extends Fragment {
     private void initViews() {
         context = getContext();
         TvCategoryList = CategoryView.findViewById(R.id.TvCategoryList);
+        ConstCategoryFarg = CategoryView.findViewById(R.id.ConstCategoryFarg);
+        IvLineBar = CategoryView.findViewById(R.id.IvLineBar);
         TvEmptyList = CategoryView.findViewById(R.id.TvEmptyList);
         RvCategoryList = CategoryView.findViewById(R.id.RvCategoryList);
         RvCustomCategoryList = CategoryView.findViewById(R.id.RvCustomCategoryList);
@@ -98,6 +94,17 @@ public class CategoryFragment extends Fragment {
     }
 
     private void initActions() {
+        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            IvLineBar.setImageResource(R.drawable.ic_title_bar_dark);
+            TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
+            TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
+            ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
+        } else {
+            ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black_dark));
+            TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black));
+            TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black));
+            IvLineBar.setImageResource(R.drawable.ic_title_bar);
+        }
         LocalBroadcastManager.getInstance(context).registerReceiver(FragmentReceiver, new IntentFilter(MedConstants.BROADCAST_FRAGMENT));
         String[] Titles = getContext().getResources().getStringArray(R.array.CategoryList);
         TvCategoryList.setText(Titles[Cate_Pos]);
@@ -112,11 +119,23 @@ public class CategoryFragment extends Fragment {
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                            System.out.println("--- 0-0 - -- : " + position + " pos :- - " + SoundModelsList.get(position).getSoundMp3Checked());
+                            System.out.println("--- 0-0 - -- : " + position + " posed :- - " + SoundModelsList.get(position).getSoundMp3Checked());
                             SoundModelsList.get(position).setSoundMp3Checked(1);
                             if (MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().isPlaying()) {
                                 MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                             }
+
+//                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+//                            MedConstants.FAVOURITESONG = "";
+//                            MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+//                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+////                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON,"Pause");
+//                            System.out.println("--- 0-0 - -- : service ");
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                context.startForegroundService(serviceIntent);
+//                            } else {
+//                                context.startService(serviceIntent);
+//                            }
                             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                                 if (MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos() == MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayerPos()) {
                                     MedConstants.SelectedPlayerArrayList.remove(i);
@@ -134,6 +153,10 @@ public class CategoryFragment extends Fragment {
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
                                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
                             MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
+//                            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+//                                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+//                                context.stopService(serviceIntent);
+//                            }
                         } else {
                             SoundModelsList.get(position).setSoundMp3Checked(0);
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -203,7 +226,7 @@ public class CategoryFragment extends Fragment {
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                            System.out.println("--- 0-0 - -- : " + position + " pos :- - " + SoundModelsList.get(position).getSoundMp3Checked());
+                            System.out.println("--- 0-0 - -- : " + position + " position :- - " + SoundModelsList.get(position).getSoundMp3Checked());
                             SoundModelsList.get(position).setSoundMp3Checked(1);
                             if (MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().isPlaying()) {
                                 MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -225,6 +248,15 @@ public class CategoryFragment extends Fragment {
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
                                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
                             MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
+//                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+//                            MedConstants.FAVOURITESONG = "";
+//                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+//                            System.out.println("--- 0-0 - -- : service ");
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                context.startForegroundService(serviceIntent);
+//                            } else {
+//                                context.startService(serviceIntent);
+//                            }
                         } else {
                             SoundModelsList.get(position).setSoundMp3Checked(0);
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -292,31 +324,31 @@ public class CategoryFragment extends Fragment {
         RvCustomCategoryList.setVisibility(View.GONE);
         TvEmptyList.setVisibility(View.GONE);
         if (Cate_Pos == 0) {
-            SoundModelsList.addAll(MedConstants.RainSounds());
+            SoundModelsList.addAll(MedConstants.RainSounds(context));
         } else if (Cate_Pos == 1) {
-            SoundModelsList.addAll(MedConstants.NatureSounds());
+            SoundModelsList.addAll(MedConstants.NatureSounds(context));
         } else if (Cate_Pos == 2) {
-            SoundModelsList.addAll(MedConstants.WindSounds());
+            SoundModelsList.addAll(MedConstants.WindSounds(context));
         } else if (Cate_Pos == 3) {
-            SoundModelsList.addAll(MedConstants.WaterSounds());
+            SoundModelsList.addAll(MedConstants.WaterSounds(context));
         } else if (Cate_Pos == 4) {
-            SoundModelsList.addAll(MedConstants.CitySounds());
+            SoundModelsList.addAll(MedConstants.CitySounds(context));
         } else if (Cate_Pos == 5) {
-            SoundModelsList.addAll(MedConstants.CountrySounds());
+            SoundModelsList.addAll(MedConstants.CountrySounds(context));
         } else if (Cate_Pos == 6) {
-            SoundModelsList.addAll(MedConstants.NightSounds());
+            SoundModelsList.addAll(MedConstants.NightSounds(context));
         } else if (Cate_Pos == 7) {
-            SoundModelsList.addAll(MedConstants.HomeSounds());
+            SoundModelsList.addAll(MedConstants.HomeSounds(context));
         } else if (Cate_Pos == 8) {
-            SoundModelsList.addAll(MedConstants.RelaxingSounds());
+            SoundModelsList.addAll(MedConstants.RelaxingSounds(context));
         } else if (Cate_Pos == 9) {
-            SoundModelsList.addAll(MedConstants.NoiseSounds());
+            SoundModelsList.addAll(MedConstants.NoiseSounds(context));
         } else if (Cate_Pos == 10) {
-            SoundModelsList.addAll(MedConstants.BinauralSounds());
+            SoundModelsList.addAll(MedConstants.BinauralSounds(context));
         } else if (Cate_Pos == 11) {
             RvCategoryList.setVisibility(View.GONE);
             RvCustomCategoryList.setVisibility(View.VISIBLE);
-            SoundModelsList.addAll(MedConstants.getSoundDefault());
+            SoundModelsList.addAll(MedConstants.getSoundDefault(context));
         }
         if (SoundModelsList.size() == 0) {
             TvEmptyList.setVisibility(View.VISIBLE);

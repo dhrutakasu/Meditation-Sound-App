@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CustomSoundAdapter extends RecyclerView.Adapter<CustomSoundAdapter.MyViewHolder> {
@@ -37,7 +39,13 @@ public class CustomSoundAdapter extends RecyclerView.Adapter<CustomSoundAdapter.
         holder.TvCategoryTitle.setText(soundModelsList.get(position).toString());
         holder.TvCategoryTitle.setGravity(Gravity.CENTER_VERTICAL);
         holder.TvCategoryTitle.setSelected(true);
-
+        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            holder.ConstSound.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light20_dark));
+            holder.TvCategoryTitle.setTextColor(context.getResources().getColor(R.color.black_dark));
+        } else {
+            holder.TvCategoryTitle.setTextColor(context.getResources().getColor(R.color.black));
+            holder.ConstSound.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light10));
+        }
         holder.itemView.setOnClickListener(view -> selectionSoundPlay.CustomSoundSelect(position));
     }
 
@@ -52,10 +60,12 @@ public class CustomSoundAdapter extends RecyclerView.Adapter<CustomSoundAdapter.
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView TvCategoryTitle;
+        private final ConstraintLayout ConstSound;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             TvCategoryTitle = itemView.findViewById(R.id.TvCategoryTitle);
+            ConstSound = itemView.findViewById(R.id.ConstSound);
         }
     }
 }

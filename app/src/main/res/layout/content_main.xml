@@ -5,7 +5,6 @@
     android:id="@+id/content_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:animateLayoutChanges="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -230,6 +229,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/IvCustomBar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_2sdp"
@@ -268,6 +268,7 @@
             app:layout_constraintTop_toBottomOf="@id/TvSelectSound">
 
             <TextView
+                android:id="@+id/TvPlayAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="marquee"
@@ -285,6 +286,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+                android:id="@+id/IvPlayAll"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_5sdp"

@@ -33,4 +33,8 @@ public class CategoryAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         return CategoryFragment.newInstance(listOfCategory[position], position);
     }
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

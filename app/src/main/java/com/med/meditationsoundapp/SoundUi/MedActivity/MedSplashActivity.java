@@ -22,8 +22,9 @@ import java.util.ArrayList;
 
 public class MedSplashActivity extends AppCompatActivity {
 
-    private long seconds = 1;
+    private long seconds = 0;
     private long secondsRemaining;
+    private String url="https://anshinfotech.in/api/soundapi.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

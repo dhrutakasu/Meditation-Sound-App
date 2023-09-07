@@ -1,75 +1,149 @@
 package com.med.meditationsoundapp.SoundService;
 
+import static android.app.NotificationManager.IMPORTANCE_HIGH;
+import static android.os.Build.VERSION.SDK_INT;
+import static android.os.Build.VERSION_CODES.O;
+
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.widget.RemoteViews;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundUi.MedActivity.MedMainActivity;
 
 public class MediaPlayerService extends Service {
+    private String Titles = "";
+    private static String CHANNEL_ID = "alarm_channel";
+    private Context context;
+    private String IconAction;
+
     public MediaPlayerService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        System.out.println("============= : " + MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
+//        Titles = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
+////        IconAction = intent.getStringExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
+//        IconAction = MedConstants.NOTIFICATION_PLAYPAUSE_ICON;
+//        context = this;
+//        if (SDK_INT > O)
+//            startMyOwnForeground();
+//        else
+//            startForeground(1, new Notification());
+        return START_STICKY;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-// Create an intent for the notification action
-        Intent intent = new Intent(this, MedMainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-// Create the custom layout
+    }
+
+    @RequiresApi(O)
+    private void startMyOwnForeground() {
+        createNotificationChannel(context);
+
+        NotificationCompat.Builder builder;
+        if (SDK_INT >= O) {
+            builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        } else {
+            builder = new NotificationCompat.Builder(context);
+        }
+
         RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.custom_notification_layout);
         remoteViews.setImageViewResource(R.id.notification_icon, R.mipmap.ic_launcher);
         remoteViews.setTextViewText(R.id.notification_title, getApplicationContext().getString(R.string.app_name));
-        if (MedConstants.IsNotificationFavorite) {
+        if (!Titles.equalsIgnoreCase("")) {
             remoteViews.setTextViewText(R.id.notification_sub_title, MedConstants.IsNotificationFavoriteTitle);
         } else {
             remoteViews.setTextViewText(R.id.notification_sub_title, "Tap to open again");
         }
-
-// Create the notification builder with custom layout
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(pendingIntent)
-                .setCustomContentView(remoteViews); // Set the custom layout
-
-// Build the notification
-        Notification notification = builder.build();
-
-// Show the notification
-        NotificationManager notificationManager = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            notificationManager = getSystemService(NotificationManager.class);
-        }
-        notificationManager.notify(1, notification); // Use a unique ID for notification
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "channel_id";
-            String channelName = "Channel Name";
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+        Intent contentIntent = new Intent(context, MedMainActivity.class);
+        PendingIntent contentPendingIntent;
+        if (SDK_INT >= Build.VERSION_CODES.S) {
+            contentPendingIntent = PendingIntent.getBroadcast(context, 100, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                notificationManager = getSystemService(NotificationManager.class);
-            }
-            notificationManager.notify(1, notification);
+            contentPendingIntent = PendingIntent.getBroadcast(context, 100, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
+        Intent PlayPauseIntent = new Intent(context, NotificationReceiver.class);
+        if (IconAction.equalsIgnoreCase("Pause")) {
+            PlayPauseIntent.putExtra(MedConstants.NOTIFICATION_ACTION, "Pause");
+            remoteViews.setImageViewResource(R.id.notification_PlayPause, R.drawable.ic_pause);
+        } else {
+            PlayPauseIntent.putExtra(MedConstants.NOTIFICATION_ACTION, "Play");
+            remoteViews.setImageViewResource(R.id.notification_PlayPause, R.drawable.ic_play);
+        }
+        PendingIntent PlayPausePendingIntent;
+        if (SDK_INT >= Build.VERSION_CODES.S) {
+            PlayPausePendingIntent = PendingIntent.getBroadcast(context, 101, PlayPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            PlayPausePendingIntent = PendingIntent.getBroadcast(context, 101, PlayPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        remoteViews.setOnClickPendingIntent(R.id.notification_PlayPause, PlayPausePendingIntent);
+
+        Intent StopIntent = new Intent(context, NotificationReceiver.class);
+        StopIntent.putExtra(MedConstants.NOTIFICATION_ACTION, "stop");
+        PendingIntent StopPendingIntent;
+        if (SDK_INT >= Build.VERSION_CODES.S) {
+            StopPendingIntent = PendingIntent.getBroadcast(context, 101, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            StopPendingIntent = PendingIntent.getBroadcast(context, 101, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        remoteViews.setOnClickPendingIntent(R.id.notification_PlayPause, StopPendingIntent);
+        NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setContent(remoteViews);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        mNotificationManager.notify(1000, builder.build());
+
+
+        Notification notification = builder.build();
+        notification.contentView = remoteViews;
+        notification.contentIntent = contentPendingIntent;
+        notification.vibrate = new long[]{1000, 500, 1000, 500, 1000, 500};
+        notification.color = ContextCompat.getColor(context, R.color.white);
+        notification.priority = Notification.PRIORITY_HIGH;
+        startForeground(1, notification);
+
+    }
+
+    private static void createNotificationChannel(Context ctx) {
+        if (SDK_INT < O) return;
+
+        final NotificationManager mgr = ctx.getSystemService(NotificationManager.class);
+        if (mgr == null) return;
+
+        final String name = "Reminder Notification";
+        if (mgr.getNotificationChannel(name) == null) {
+            final NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, IMPORTANCE_HIGH);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{1000, 500, 1000, 500, 1000, 500});
+            channel.setBypassDnd(true);
+            mgr.createNotificationChannel(channel);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.med.meditationsoundapp.SoundUi.MedAdapter;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +11,13 @@ import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
 import com.med.meditationsoundapp.SoundModel.SoundModel;
+import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
@@ -38,7 +42,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.TvCustomTitle.setText(soundModelsList.get(position).getSoundTitle());
         holder.SeekCategoryVolume.setMax(100);
-        System.out.println("-- -- -- - - title : "+soundModelsList.get(position).getSoundMp3Checked()+" -- vol : "+soundModelsList.get(position).getSoundVolume());
+        System.out.println("-- -- -- - - title : " + soundModelsList.get(position).getSoundMp3Checked() + " -- vol : " + soundModelsList.get(position).getSoundVolume());
+        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+            holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.purple_light_dark));
+            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+            holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black_dark));
+            holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
+        } else {
+            holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked);
+            holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black));
+            holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light10));
+            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
+        }
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
             holder.TvCategoryVolume.setText(String.valueOf(soundModelsList.get(position).getSoundVolume()).toString());
@@ -73,7 +88,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("----- - - -seek : "+seekBar.getProgress());
+                System.out.println("----- - - -seek : " + seekBar.getProgress());
                 setSoundPlay.SoundPlaysVolume(position, soundModelsList.get(position).getSoundPos(), seekBar.getProgress());
             }
         });
@@ -92,8 +107,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private final ImageView IvCategoryImgChecked;
-        private final TextView TvCustomTitle,TvCategoryVolume;
+        private final TextView TvCustomTitle, TvCategoryVolume;
         private final SeekBar SeekCategoryVolume;
+        private final ConstraintLayout ConstCutomText;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +117,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             IvCategoryImgChecked = itemView.findViewById(R.id.IvCategoryImgChecked);
             TvCategoryVolume = itemView.findViewById(R.id.TvCategoryVolume);
             SeekCategoryVolume = itemView.findViewById(R.id.SeekCategoryVolume);
+            ConstCutomText = itemView.findViewById(R.id.ConstCutomText);
         }
     }
 }

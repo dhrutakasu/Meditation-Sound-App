@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.med.meditationsoundapp">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
     <application
         android:name=".SoundAppcation.MedApp"
         android:allowBackup="true"
@@ -18,15 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MeditationSoundApp"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".SoundService.MediaPlayerService"
-            android:enabled="true"
-            android:exported="true"></service>
-
         <activity
             android:name=".SoundUi.MedActivity.MedMainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".SoundUi.MedActivity.MedSplashActivity"
             android:exported="true"
@@ -37,10 +27,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
+
+        <receiver
+            android:name=".SoundService.NotificationReceiver"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name=".SoundService.MediaPlayerService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
+     
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

@@ -16,4 +16,21 @@
     <color name="purple_light">#AF94FF</color>
     <color name="app_main_color_gray">#4E4E4E</color>
     <color name="app_main_color_center">#9976FF</color>
+
+    <color name="purple_200_dark">#F47500</color>
+    <color name="purple_500_dark">#F47500</color>
+    <color name="purple_700_dark">#F47500</color>
+    <color name="teal_200_dark">#F47500</color>
+    <color name="teal_700_dark">#F47500</color>
+    <color name="black_dark">#FFFFFFFF</color>
+    <color name="LightBlack_dark">#66000000</color>
+    <color name="white_dark">#FF000000</color>
+    <color name="Onlywhite_dark">#FFFFFFFF</color>
+    <color name="seek_bar_background_dark">#ababab</color>
+    <color name="app_main_color_dark">#F47500</color>
+    <color name="app_main_color_light10_dark">#1AFFFFFF</color>
+    <color name="app_main_color_light20_dark">#33F47500</color>
+    <color name="purple_light_dark">#FF993D</color>
+    <color name="app_main_color_gray_dark">#4E4E4E</color>
+    <color name="app_main_color_center_dark">#FF8415</color>
 </resources>

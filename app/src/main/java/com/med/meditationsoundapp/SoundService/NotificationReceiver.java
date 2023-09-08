@@ -10,50 +10,82 @@ import android.widget.Toast;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
 
 import androidx.annotation.RequiresApi;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-//        if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("Pause")) {
-//            for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
-//                if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
-//                    MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
-//                }
-//            }
-//            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
-//                if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
-//                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
-//                }
-//            }
-//        } else if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("stop")) {
-//            for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
-//                if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
-//                    MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
-//                }
-//            }
-//            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
-//                if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
-//                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
-//                }
-//            }
-//            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
-//                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                context.stopService(serviceIntent);
-//            }
-//        } else {
-//            new PlayPauseAsynkTask(context).execute();
-//        }
-//        if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
-//            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//            context.stopService(serviceIntent);
-//        }
-//        Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//        serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, MedConstants.FAVOURITESONG);
+        System.out.println("======= === : " + intent.getStringExtra(MedConstants.NOTIFICATION_ACTION));
+        if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("Pause")) {
+            for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
+                if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                    MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
+                }
+            }
+            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
+                if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
+                }
+            }
+            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                context.stopService(serviceIntent);
+            }
+            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+            if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("Pause")) {
+                MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Play";
+            } else {
+                MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+            }
+            MedConstants.FAVOURITESONG = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
+            System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
+            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, MedConstants.FAVOURITESONG);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            context.startForegroundService(serviceIntent);
 //        } else {
-//            context.startService(serviceIntent);
+            context.startService(serviceIntent);
 //        }
+        } else if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("stop")) {
+            for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
+                if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                    MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
+                }
+            }
+            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
+                if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
+                }
+            }
+            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                context.stopService(serviceIntent);
+            }
+        } else {
+            new PlayPauseAsynkTask(context).execute();
+            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                context.stopService(serviceIntent);
+            }
+            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+            if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("Pause")) {
+                MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Play";
+            } else {
+                MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+            }
+            MedConstants.FAVOURITESONG = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
+            System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
+            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, MedConstants.FAVOURITESONG);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(serviceIntent);
+//        } else {
+            context.startService(serviceIntent);
+//        }
+        }
+
+
+        Intent intentS = new Intent(MedConstants.BROADCAST_NOTIFICATION);
+        intentS.putExtra("CheckedPlayOrPause", intent.getStringExtra(MedConstants.NOTIFICATION_ACTION));
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
@@ -75,14 +107,15 @@ public class NotificationReceiver extends BroadcastReceiver {
                 for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                     MedConstants.SelectedPlayerArrayList.get(i).getPlayer().prepareAsync();
                 }
-            } else {
-                Toast.makeText(context, "No Sounds play now.", Toast.LENGTH_SHORT).show();
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void unused) {
+            if (MedConstants.SelectedPlayerArrayList.size() < 0) {
+                Toast.makeText(context, "No Sounds play now.", Toast.LENGTH_SHORT).show();
+            }
             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                 int finalI = i;
                 MedConstants.SelectedPlayerArrayList.get(i).getPlayer().setOnPreparedListener(mp ->

@@ -13,7 +13,7 @@ import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import androidx.core.content.ContextCompat;
 
-public class MyAppExitDialog extends Dialog {
+public class SoundExitDialog extends Dialog {
     private final MedMainActivity activity;
     public ExitListener exitListener;
 
@@ -22,7 +22,7 @@ public class MyAppExitDialog extends Dialog {
         void onExit();
     }
 
-    public MyAppExitDialog(MedMainActivity activity, Context context, ExitListener exitListener) {
+    public SoundExitDialog(MedMainActivity activity, Context context, ExitListener exitListener) {
         super(context);
         this.activity = activity;
         this.exitListener = exitListener;

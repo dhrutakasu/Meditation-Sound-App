@@ -7,8 +7,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdSize;
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundAds.MedAd_Banner;
+import com.med.meditationsoundapp.SoundConstants.MedConstants;
 
 public class PrivacyPolicyFragment extends Fragment {
 
@@ -34,6 +38,8 @@ public class PrivacyPolicyFragment extends Fragment {
     }
 
     private void initActions() {
-
+        if (MedConstants.isConnectingToInternet(getContext())) {
+            MedAd_Banner.getMedInstance().showBannerAds(getActivity(), AdSize.LARGE_BANNER, (RelativeLayout) PolicyView.findViewById(R.id.RlMedBannerAdView), (RelativeLayout) PolicyView.findViewById(R.id.RlMedBannerAd));
+        }
     }
 }

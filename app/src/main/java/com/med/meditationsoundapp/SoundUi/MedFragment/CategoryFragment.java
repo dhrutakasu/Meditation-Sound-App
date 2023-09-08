@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
@@ -49,6 +52,8 @@ public class CategoryFragment extends Fragment {
     private CustomAdapter customAdapter;
     private ImageView IvLineBar;
     private ConstraintLayout ConstCategoryFarg;
+    private View ViewProgress;
+    private ProgressBar ProgressDialog;
 
     public static CategoryFragment newInstance(String category, int position) {
         CategoryFragment fragment = new CategoryFragment();
@@ -88,6 +93,8 @@ public class CategoryFragment extends Fragment {
         TvEmptyList = CategoryView.findViewById(R.id.TvEmptyList);
         RvCategoryList = CategoryView.findViewById(R.id.RvCategoryList);
         RvCustomCategoryList = CategoryView.findViewById(R.id.RvCustomCategoryList);
+        ViewProgress = CategoryView.findViewById(R.id.ViewProgress);
+        ProgressDialog = CategoryView.findViewById(R.id.ProgressDialog);
     }
 
     private void initListeners() {
@@ -99,7 +106,9 @@ public class CategoryFragment extends Fragment {
             TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
+            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
         } else {
+            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black_dark));
             TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black));
             TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -117,6 +126,8 @@ public class CategoryFragment extends Fragment {
                 try {
 
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
+                        ViewProgress.setVisibility(View.VISIBLE);
+
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
                             System.out.println("--- 0-0 - -- : " + position + " posed :- - " + SoundModelsList.get(position).getSoundMp3Checked());
@@ -125,16 +136,16 @@ public class CategoryFragment extends Fragment {
                                 MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                             }
 
-//                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                            MedConstants.FAVOURITESONG = "";
-//                            MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
-//                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
-////                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON,"Pause");
+                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                            MedConstants.FAVOURITESONG = "";
+                            MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Pause");
 //                            System.out.println("--- 0-0 - -- : service ");
 //                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                context.startForegroundService(serviceIntent);
 //                            } else {
-//                                context.startService(serviceIntent);
+                            context.startService(serviceIntent);
 //                            }
                             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                                 if (MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos() == MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayerPos()) {
@@ -153,10 +164,6 @@ public class CategoryFragment extends Fragment {
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
                                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
                             MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
-//                            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
-//                                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                                context.stopService(serviceIntent);
-//                            }
                         } else {
                             SoundModelsList.get(position).setSoundMp3Checked(0);
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -164,6 +171,12 @@ public class CategoryFragment extends Fragment {
                         }
 
                         customAdapter.notifyDataSetChanged();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ViewProgress.setVisibility(View.GONE);
+                            }
+                        },1000);
 
                         Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
                         intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
@@ -172,7 +185,7 @@ public class CategoryFragment extends Fragment {
 //                        e.printStackTrace();
 //                    }
                     } else {
-                        SoundMaxDialog reminderDialog = new SoundMaxDialog(context, (SoundMaxDialog soundMaxDialog) -> {
+                        SoundMaxDialog reminderDialog = new SoundMaxDialog(getActivity(), (SoundMaxDialog soundMaxDialog) -> {
                             soundMaxDialog.dismiss();
                         });
                         reminderDialog.show();
@@ -192,6 +205,7 @@ public class CategoryFragment extends Fragment {
             @Override
             public void SoundPlaysVolume(int position, int PlayerPos, int PlayerVolume) {
                 try {
+                    ViewProgress.setVisibility(View.VISIBLE);
                     System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                     SoundModelsList.get(position).setSoundVolume(PlayerVolume);
@@ -211,7 +225,12 @@ public class CategoryFragment extends Fragment {
                     }
                     customAdapter.notifyDataSetChanged();
 
-
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewProgress.setVisibility(View.GONE);
+                        }
+                    },1000);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -224,6 +243,7 @@ public class CategoryFragment extends Fragment {
                 try {
 
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
+                        ViewProgress.setVisibility(View.VISIBLE);
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
                             System.out.println("--- 0-0 - -- : " + position + " position :- - " + SoundModelsList.get(position).getSoundMp3Checked());
@@ -248,14 +268,15 @@ public class CategoryFragment extends Fragment {
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().setOnCompletionListener(mp ->
                                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().start());
                             MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(PlayerPos));
-//                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                            MedConstants.FAVOURITESONG = "";
-//                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
-//                            System.out.println("--- 0-0 - -- : service ");
+                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                            MedConstants.FAVOURITESONG = "";
+                            MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+                            System.out.println("--- 0-0 - -- : service ");
 //                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                context.startForegroundService(serviceIntent);
 //                            } else {
-//                                context.startService(serviceIntent);
+                            context.startService(serviceIntent);
 //                            }
                         } else {
                             SoundModelsList.get(position).setSoundMp3Checked(0);
@@ -264,6 +285,12 @@ public class CategoryFragment extends Fragment {
                         }
 
                         categoryListAdapter.notifyDataSetChanged();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                ViewProgress.setVisibility(View.GONE);
+                            }
+                        },1000);
 
                         Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
                         intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
@@ -272,7 +299,7 @@ public class CategoryFragment extends Fragment {
 //                        e.printStackTrace();
 //                    }
                     } else {
-                        SoundMaxDialog reminderDialog = new SoundMaxDialog(context, (SoundMaxDialog soundMaxDialog) -> {
+                        SoundMaxDialog reminderDialog = new SoundMaxDialog(getActivity(), (SoundMaxDialog soundMaxDialog) -> {
                             soundMaxDialog.dismiss();
                         });
                         reminderDialog.show();
@@ -292,6 +319,8 @@ public class CategoryFragment extends Fragment {
             @Override
             public void SoundPlaysVolume(int position, int PlayerPos, int PlayerVolume) {
                 try {
+                    ViewProgress.setVisibility(View.VISIBLE);
+
                     System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                     SoundModelsList.get(position).setSoundVolume(PlayerVolume);
@@ -311,6 +340,13 @@ public class CategoryFragment extends Fragment {
                         }
                     }
                     categoryListAdapter.notifyDataSetChanged();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewProgress.setVisibility(View.GONE);
+                        }
+                    },1000);
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -365,8 +401,8 @@ public class CategoryFragment extends Fragment {
 //                    soundModel.setSoundMp3Checked(0);
 //                    soundModel.setSoundVolume(soundModel.getSoundVolume());
                     SoundModelsList.set(j, soundModel);
+                    System.out.println("-------- hhh : " + SoundModelsList.get(j).getSoundMp3Checked());
                 }
-                System.out.println("-------- hhh : " + SoundModelsList.get(j).getSoundVolume());
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.med.meditationsoundapp.SoundUi.MedAdapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,15 +46,18 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         System.out.println("-- -- -- - - title : " + soundModelsList.get(position).getSoundMp3Checked() + " -- vol : " + soundModelsList.get(position).getSoundVolume());
         if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.purple_light_dark));
-            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+            holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
+//            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black_dark));
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
         } else {
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked);
             holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black));
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light10));
-            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
+            holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
+//            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
         }
+
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
             holder.TvCategoryVolume.setText(String.valueOf(soundModelsList.get(position).getSoundVolume()).toString());

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ConstSelectAmbience"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/_25sdp"
     android:layout_marginEnd="@dimen/_25sdp"
-    android:id="@+id/ConstSelectAmbience"
     android:background="@drawable/sound_dialog_bg">
 
     <ImageView
@@ -20,7 +20,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.5" />
 
+    <FrameLayout
+        android:id="@+id/FlNativeFav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:layout_constraintBottom_toTopOf="@+id/ConstFav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/IvSelectAmbienceTitle" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ConstFav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -29,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/IvSelectAmbienceTitle">
+        app:layout_constraintTop_toBottomOf="@id/FlNativeFav">
 
         <TextView
             android:id="@+id/TvSoundsFavMsg"
@@ -76,8 +90,8 @@
             android:layout_marginTop="@dimen/_16sdp"
             android:layout_marginEnd="@dimen/_16sdp"
             android:layout_marginBottom="@dimen/_12sdp"
-            android:paddingBottom="@dimen/_8sdp"
             android:gravity="center"
+            android:paddingBottom="@dimen/_8sdp"
             android:text="@string/cancel"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp"

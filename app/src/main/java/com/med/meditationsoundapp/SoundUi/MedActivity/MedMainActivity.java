@@ -30,6 +30,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdSize;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.karumi.dexter.Dexter;
@@ -38,8 +39,11 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundAds.MedAd_Banner;
+import com.med.meditationsoundapp.SoundAds.MedAd_Interstitial;
 import com.med.meditationsoundapp.SoundConstants.MedConstants;
 import com.med.meditationsoundapp.SoundDatabase.MedDatabaseHelper;
+import com.med.meditationsoundapp.SoundDialog.SoundExitDialog;
 import com.med.meditationsoundapp.SoundDialog.SoundFavoriteDialog;
 import com.med.meditationsoundapp.SoundDialog.SoundPlayAllDialog;
 import com.med.meditationsoundapp.SoundDialog.SoundReminderDialog;
@@ -106,6 +110,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private ProgressBar ProgressDialog;
     private LinearLayout ConsBottom;
     private LinearLayout LlHeaderImage;
+    private boolean IsFirst = false;
 
 
     @Override
@@ -278,6 +283,9 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 } else {
                     IvCategoryNext.setVisibility(View.VISIBLE);
                 }
+                if (DrawerMain.isOpen()) {
+                    DrawerMain.closeDrawer(GravityCompat.START);
+                }
             }
 
             @Override
@@ -288,127 +296,142 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void MedInitActions() {
-        IvDrawer.setVisibility(View.VISIBLE);
-        IvSetting.setVisibility(View.VISIBLE);
-        IvUpload.setVisibility(View.VISIBLE);
-        IvBack.setVisibility(View.GONE);
-        RvSelectedSoundsList.setVisibility(View.VISIBLE);
-        LlSelectedSoundsList.setVisibility(View.GONE);
-        TvTitle.setText(getString(R.string.app_name));
-//        LlButtonView.setVisibility(View.GONE);
-        LlSelectSoundPage.setVisibility(View.GONE);
-        RvSelectSound.setVisibility(View.GONE);
-        ViewProgress.setVisibility(View.GONE);
-        TvReminderTime.setVisibility(View.GONE);
-        IvCategoryImg.setVisibility(View.VISIBLE);
-        PagerCategory.setVisibility(View.VISIBLE);
+        if (!IsFirst) {
+            IsFirst = true;
+            if (MedConstants.isConnectingToInternet(context)) {
+                MedAd_Banner.getMedInstance().showBannerAds(this, AdSize.LARGE_BANNER, (RelativeLayout) findViewById(R.id.RlMedBannerAdView), (RelativeLayout) findViewById(R.id.RlMedBannerAd));
+            }
+            IvDrawer.setVisibility(View.VISIBLE);
+            IvSetting.setVisibility(View.VISIBLE);
+            IvUpload.setVisibility(View.VISIBLE);
+            IvBack.setVisibility(View.GONE);
+            RvSelectedSoundsList.setVisibility(View.VISIBLE);
+            LlSelectedSoundsList.setVisibility(View.GONE);
+            TvTitle.setText(getString(R.string.app_name));
+            LlButtonView.setVisibility(View.GONE);
+            LlSelectSoundPage.setVisibility(View.GONE);
+            RvSelectSound.setVisibility(View.GONE);
+            ViewProgress.setVisibility(View.GONE);
+            TvReminderTime.setVisibility(View.GONE);
+            IvCategoryImg.setVisibility(View.VISIBLE);
+            PagerCategory.setVisibility(View.VISIBLE);
+            if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), PorterDuff.Mode.SRC_IN);
+                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+            } else {
+                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), PorterDuff.Mode.SRC_IN);
+                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
+            }
+            new MedPref(context).putBoolean(MedPref.SET_TIMER, false);
+            DrawerToggle = new ActionBarDrawerToggle(this, DrawerMain, R.string.nav_open, R.string.nav_close);
+            DrawerMain.addDrawerListener(DrawerToggle);
+            DrawerToggle.syncState();
+
+            ListOfCategory = getResources().getStringArray(R.array.CategoryList);
+            for (int i = 0; i < ListOfCategory.length; i++) {
+                TabCategory.addTab(TabCategory.newTab().setText(ListOfCategory[i].toString()));
+            }
+
+
+            if (PagerCategory.getCurrentItem() == 0) {
+                IvCategoryPrevious.setVisibility(View.GONE);
+            } else {
+                IvCategoryPrevious.setVisibility(View.VISIBLE);
+            }
+
+            audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+            int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+            TvVolume.setText(volume + "");
+            SeekVolume.setProgress(volume);
+            SeekVolume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+            SeekVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int newVolume, boolean b) {
+                    ViewProgress.setVisibility(View.VISIBLE);
+                    TvVolume.setText(newVolume + "");
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewProgress.setVisibility(View.GONE);
+                        }
+                    }, 1000);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+            });
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                String s = Manifest.permission.READ_MEDIA_AUDIO;
+                String s1 = Manifest.permission.POST_NOTIFICATIONS;
+                Dexter.withActivity(this)
+                        .withPermissions(s, s1)
+                        .withListener(new MultiplePermissionsListener() {
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                if (report.areAllPermissionsGranted()) {
+                                    MedConstants.getSoundDefault(context);
+                                    MedConstants.SelectedPlayerArrayList = new ArrayList<>();
+                                    initArrays();
+                                }
+                                if (report.isAnyPermissionPermanentlyDenied()) {
+                                    MedConstants.showSettingsDialog(MedMainActivity.this);
+                                }
+                            }
+
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken permissionToken) {
+                                MedConstants.showPermissionDialog(MedMainActivity.this, permissionToken);
+                            }
+                        })
+                        .onSameThread()
+                        .check();
+            } else {
+                String s = Manifest.permission.READ_EXTERNAL_STORAGE;
+                Dexter.withActivity(this)
+                        .withPermissions(s)
+                        .withListener(new MultiplePermissionsListener() {
+                            public void onPermissionsChecked(MultiplePermissionsReport report) {
+                                if (report.areAllPermissionsGranted()) {
+                                    MedConstants.getSoundDefault(context);
+                                    MedConstants.SelectedPlayerArrayList = new ArrayList<>();
+                                    initArrays();
+                                }
+                                if (report.isAnyPermissionPermanentlyDenied()) {
+                                    MedConstants.showSettingsDialog(MedMainActivity.this);
+                                }
+                            }
+
+                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken permissionToken) {
+                                MedConstants.showPermissionDialog(MedMainActivity.this, permissionToken);
+                            }
+                        })
+                        .onSameThread()
+                        .check();
+            }
+            LocalBroadcastManager.getInstance(context).registerReceiver(MainReceiver, new IntentFilter(MedConstants.BROADCAST_MAIN));
+            LocalBroadcastManager.getInstance(context).registerReceiver(ThemeReceiver, new IntentFilter(MedConstants.BROADCAST_THEME));
+            LocalBroadcastManager.getInstance(context).registerReceiver(MainSettingReceiver, new IntentFilter(MedConstants.BROADCAST_SETTING));
+            LocalBroadcastManager.getInstance(context).registerReceiver(MainNotificationReceiver, new IntentFilter(MedConstants.BROADCAST_NOTIFICATION));
+
+        }
         if (new MedPref(context).getBoolean(MedPref.BOOL_DEVICE, true)) {
             ConsVolume.setVisibility(View.VISIBLE);
         } else {
             ConsVolume.setVisibility(View.GONE);
         }
-        new MedPref(context).putBoolean(MedPref.SET_TIMER, false);
-        if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
-            IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), PorterDuff.Mode.SRC_IN);
-            IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-        } else {
-            IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), PorterDuff.Mode.SRC_IN);
-            IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-            IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), PorterDuff.Mode.SRC_IN);
-        }
-        DrawerToggle = new ActionBarDrawerToggle(this, DrawerMain, R.string.nav_open, R.string.nav_close);
-        DrawerMain.addDrawerListener(DrawerToggle);
-        DrawerToggle.syncState();
-
-        ListOfCategory = getResources().getStringArray(R.array.CategoryList);
-        for (int i = 0; i < ListOfCategory.length; i++) {
-            TabCategory.addTab(TabCategory.newTab().setText(ListOfCategory[i].toString()));
-        }
-
-
-        if (PagerCategory.getCurrentItem() == 0) {
-            IvCategoryPrevious.setVisibility(View.GONE);
-        } else {
-            IvCategoryPrevious.setVisibility(View.VISIBLE);
-        }
-
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        int volume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        TvVolume.setText(volume + "");
-        SeekVolume.setProgress(volume);
-        SeekVolume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        SeekVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int newVolume, boolean b) {
-                TvVolume.setText(newVolume + "");
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            String s = Manifest.permission.READ_MEDIA_AUDIO;
-            String s1 = Manifest.permission.POST_NOTIFICATIONS;
-            Dexter.withActivity(this)
-                    .withPermissions(s, s1)
-                    .withListener(new MultiplePermissionsListener() {
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                MedConstants.getSoundDefault(context);
-                                MedConstants.SelectedPlayerArrayList = new ArrayList<>();
-                                initArrays();
-                            }
-                            if (report.isAnyPermissionPermanentlyDenied()) {
-                                MedConstants.showSettingsDialog(MedMainActivity.this);
-                            }
-                        }
-
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken permissionToken) {
-                            MedConstants.showPermissionDialog(MedMainActivity.this, permissionToken);
-                        }
-                    })
-                    .onSameThread()
-                    .check();
-        } else {
-            String s = Manifest.permission.READ_EXTERNAL_STORAGE;
-            Dexter.withActivity(this)
-                    .withPermissions(s)
-                    .withListener(new MultiplePermissionsListener() {
-                        public void onPermissionsChecked(MultiplePermissionsReport report) {
-                            if (report.areAllPermissionsGranted()) {
-                                MedConstants.getSoundDefault(context);
-                                MedConstants.SelectedPlayerArrayList = new ArrayList<>();
-                                initArrays();
-                            }
-                            if (report.isAnyPermissionPermanentlyDenied()) {
-                                MedConstants.showSettingsDialog(MedMainActivity.this);
-                            }
-                        }
-
-                        public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken permissionToken) {
-                            MedConstants.showPermissionDialog(MedMainActivity.this, permissionToken);
-                        }
-                    })
-                    .onSameThread()
-                    .check();
-        }
-        LocalBroadcastManager.getInstance(context).registerReceiver(MainReceiver, new IntentFilter(MedConstants.BROADCAST_MAIN));
-        LocalBroadcastManager.getInstance(context).registerReceiver(ThemeReceiver, new IntentFilter(MedConstants.BROADCAST_THEME));
-        LocalBroadcastManager.getInstance(context).registerReceiver(MainSettingReceiver, new IntentFilter(MedConstants.BROADCAST_SETTING));
-    }
+      }
 
     private void initArrays() {
         MedConstants.mediaPlayerArrayList = new ArrayList<>();
@@ -478,12 +501,14 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             LlHeaderImage = (LinearLayout) header.findViewById(R.id.LlHeaderImage);
             LlHeaderImage.setBackgroundResource(R.drawable.ic_header_img_dark);
             NavMain.setBackgroundColor(getResources().getColor(R.color.black));
-            NavMain.getItemBackground().setColorFilter(ContextCompat.getColor(context, R.color.black), PorterDuff.Mode.SRC_IN);
-            NavMain.setItemTextColor(ColorStateList.valueOf(R.color.black_dark));
+
+            NavMain.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black_dark)));
+            NavMain.setItemBackgroundResource(R.drawable.ic_background_drawer_dark);
             ConsVolume.setBackgroundResource(R.drawable.ic_volume_bar_dark);
             TvVolume.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             DrawerMain.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
-            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+            SeekVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
+//            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             TvCountSounds.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             ConsBottom.setBackgroundColor(getResources().getColor(R.color.app_main_color_light10));
@@ -503,17 +528,18 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             TvPlayAll.setTextColor(getResources().getColor(R.color.black));
             IvPreview.setImageResource(R.drawable.icon_preview);
             IvVolume.setImageResource(R.drawable.ic_volume);
-            IvCustomBar.setImageResource(R.drawable.ic_title_bar_dark);
+            IvCustomBar.setImageResource(R.drawable.ic_title_bar);
             View header = NavMain.getHeaderView(0);
             LlHeaderImage = (LinearLayout) header.findViewById(R.id.LlHeaderImage);
             LlHeaderImage.setBackgroundResource(R.drawable.ic_header_img);
             NavMain.setBackgroundColor(getResources().getColor(R.color.black_dark));
-            NavMain.setItemTextColor(ColorStateList.valueOf(R.color.black));
-            NavMain.getItemBackground().setColorFilter(ContextCompat.getColor(context, R.color.black_dark), PorterDuff.Mode.SRC_IN);
+            NavMain.setItemTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black)));
+            NavMain.setItemBackgroundResource(R.drawable.ic_background_drawer);
             IvPlayAll.setImageResource(R.drawable.ic_play_all);
             TvVolume.setTextColor(ContextCompat.getColor(context, R.color.black));
             DrawerMain.setBackgroundColor(ContextCompat.getColor(context, R.color.black_dark));
-            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
+            SeekVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
+//            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             TvCountSounds.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
         }
@@ -526,22 +552,28 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
             if (intent.getIntExtra(MedConstants.SelectedSounds, 0) > 0) {
                 LlButtonView.setVisibility(View.VISIBLE);
-                IvSoundPlayPause.setImageResource(R.drawable.icon_pause);
+                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_pause_dark);
+                } else {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_pause);
+                }
                 isStartPlayer = true;
             } else {
-                IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
+                } else {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                }
                 LlButtonView.setVisibility(View.GONE);
                 isStartPlayer = false;
             }
-            PagerCategory.getAdapter().notifyDataSetChanged();
-            onResume();
         }
     };
 
     private BroadcastReceiver ThemeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
+            IvSoundStop.performClick();
             PagerCategory.getAdapter().notifyDataSetChanged();
             onResume();
         }
@@ -559,6 +591,30 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             Intent intentS = new Intent(MedConstants.BROADCAST_FRAGMENT);
             intentS.putExtra(MedConstants.FRAGMENT_CLICK, "ArraySet");
             LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
+        }
+    };
+
+    private BroadcastReceiver MainNotificationReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            System.out.println("== == = = =CheckedPlayOrPause : " + intent.getStringExtra("CheckedPlayOrPause"));
+            if (intent.getStringExtra("CheckedPlayOrPause").equalsIgnoreCase("Play")) {
+                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_pause_dark);
+                } else {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_pause);
+                }
+            } else if (intent.getStringExtra("CheckedPlayOrPause").equalsIgnoreCase("Pause")) {
+                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
+                } else {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                }
+            } else if (intent.getStringExtra("CheckedPlayOrPause").equalsIgnoreCase("Stop")) {
+                IvSoundStop.performClick();
+                LlButtonView.setVisibility(View.GONE);
+                isStartPlayer = false;
+            }
         }
     };
 
@@ -609,153 +665,222 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.IvFavoriteTab:
-                if (DrawerMain.isOpen()) {
-                    DrawerMain.closeDrawer(GravityCompat.START);
-                }
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+                        if (DrawerMain.isOpen()) {
+                            DrawerMain.closeDrawer(GravityCompat.START);
+                        }
 
-                ArrayList<FavModel> favModels = helper.getGroupByUniqueIdList();
-                if (favModels.size() > 0) {
-                    SoundSelectDialog soundSelectDialog = new SoundSelectDialog(MedMainActivity.this, context, favModels, new SoundSelectDialog.DialogDismiss() {
-                        @Override
-                        public void SoundListener(SoundSelectDialog soundSelectDialog, int SoundPos) {
-                            for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
-                                if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
-                                    MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
-                                }
-                            }
-                            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
-                                if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
-                                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
-                                }
-                            }
+                        ArrayList<FavModel> favModels = helper.getGroupByUniqueIdList();
+                        if (favModels.size() > 0) {
+                            SoundSelectDialog soundSelectDialog = new SoundSelectDialog(MedMainActivity.this, context, favModels, new SoundSelectDialog.DialogDismiss() {
+                                @Override
+                                public void SoundListener(SoundSelectDialog soundSelectDialog, int SoundPos) {
+                                    for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
+                                        if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                                            MedConstants.mediaPlayerArrayList.get(i).getPlayer().stop();
+                                        }
+                                    }
+                                    for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
+                                        if (MedConstants.SelectedPlayerArrayList.get(i).getPlayer().isPlaying()) {
+                                            MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
+                                        }
+                                    }
 
-                            ArrayList<Integer> integers = helper.getGroupByFavList(Integer.parseInt(favModels.get(SoundPos).getId()));
-                            MedConstants.SelectedPlayerArrayList = new ArrayList<>();
-                            TvReminderTime.setVisibility(View.VISIBLE);
-                            TvReminderTime.setText(favModels.get(SoundPos).getName());
-//                            if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
-//                                Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                                context.stopService(serviceIntent);
-//                            }
-//                            MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
-//                            Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                            MedConstants.FAVOURITESONG = favModels.get(SoundPos).getName();
-//                            serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, favModels.get(SoundPos).getName());
-////                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON,"Pause");
+                                    ArrayList<Integer> integers = helper.getGroupByFavList(Integer.parseInt(favModels.get(SoundPos).getId()));
+                                    MedConstants.SelectedPlayerArrayList = new ArrayList<>();
+                                    TvReminderTime.setVisibility(View.VISIBLE);
+                                    TvReminderTime.setText(favModels.get(SoundPos).getName());
+
+                                    if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                                        Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                                        context.stopService(serviceIntent);
+                                    }
+                                    MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+                                    Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                                    MedConstants.FAVOURITESONG = favModels.get(SoundPos).getName();
+                                    serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, favModels.get(SoundPos).getName());
+//                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON,"Pause");
 //                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                                context.startForegroundService(serviceIntent);
 //                            } else {
-//                                context.startService(serviceIntent);
+                                    context.startService(serviceIntent);
 //                            }
-                            new FavAsynkTask(integers).execute();
+                                    new FavAsynkTask(integers).execute();
 
-                            soundSelectDialog.dismiss();
+                                    soundSelectDialog.dismiss();
+                                }
+
+                                @Override
+                                public void DismissListener(SoundSelectDialog soundSelectDialog) {
+                                    soundSelectDialog.dismiss();
+                                }
+                            });
+                            soundSelectDialog.show();
+                            WindowManager.LayoutParams attribute = soundSelectDialog.getWindow().getAttributes();
+                            Window soundSelectDialogWindow = soundSelectDialog.getWindow();
+                            attribute.copyFrom(soundSelectDialogWindow.getAttributes());
+                            attribute.width = WindowManager.LayoutParams.MATCH_PARENT;
+                            attribute.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                            attribute.gravity = Gravity.CENTER;
+                            soundSelectDialogWindow.setAttributes(attribute);
+
+                            LlSelectSoundPage.setVisibility(View.GONE);
+                            RvSelectSound.setVisibility(View.GONE);
+                            IvCategoryImg.setVisibility(View.VISIBLE);
+                            PagerCategory.setVisibility(View.VISIBLE);
+                            IvCategoryPrevious.setVisibility(View.VISIBLE);
+                            IvCategoryNext.setVisibility(View.VISIBLE);
+                            if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            } else {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            }
+                            if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
+                                LlSelectedSoundsList.setVisibility(View.GONE);
+                            }
+                        } else {
+                            Toast.makeText(context, "No favourite items..", Toast.LENGTH_SHORT).show();
                         }
-
-                        @Override
-                        public void DismissListener(SoundSelectDialog soundSelectDialog) {
-                            soundSelectDialog.dismiss();
-                        }
-                    });
-                    soundSelectDialog.show();
-                    WindowManager.LayoutParams attribute = soundSelectDialog.getWindow().getAttributes();
-                    Window soundSelectDialogWindow = soundSelectDialog.getWindow();
-                    attribute.copyFrom(soundSelectDialogWindow.getAttributes());
-                    attribute.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    attribute.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                    attribute.gravity = Gravity.CENTER;
-                    soundSelectDialogWindow.setAttributes(attribute);
-
-                    LlSelectSoundPage.setVisibility(View.GONE);
-                    RvSelectSound.setVisibility(View.GONE);
-                    IvCategoryImg.setVisibility(View.VISIBLE);
-                    PagerCategory.setVisibility(View.VISIBLE);
-                    IvCategoryPrevious.setVisibility(View.VISIBLE);
-                    IvCategoryNext.setVisibility(View.VISIBLE);
-                    if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
-                        IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    } else {
-                        IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                     }
-                    if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
-                        LlSelectedSoundsList.setVisibility(View.GONE);
-                    }
-                } else {
-                    Toast.makeText(context, "No favourite items..", Toast.LENGTH_SHORT).show();
-                }
+                });
+
                 break;
             case R.id.IvReminderTab:
-                if (DrawerMain.isOpen()) {
-                    DrawerMain.closeDrawer(GravityCompat.START);
-                }
-                boolean Isreminder = new MedPref(context).getBoolean(MedPref.SET_TIMER, false);
-                if (Isreminder) {
-                    new MedPref(context).putBoolean(MedPref.SET_TIMER, false);
-                    IvReminderTab.setImageResource(R.drawable.ic_reminder_non);
-                    countDownReminder.cancel();
-                    TvReminderTime.setVisibility(View.GONE);
-                } else {
-                    LlSelectSoundPage.setVisibility(View.GONE);
-                    RvSelectSound.setVisibility(View.GONE);
-                    IvCategoryImg.setVisibility(View.VISIBLE);
-                    PagerCategory.setVisibility(View.VISIBLE);
-                    IvCategoryPrevious.setVisibility(View.VISIBLE);
-                    IvCategoryNext.setVisibility(View.VISIBLE);
-                    SoundReminderDialog reminderDialog = new SoundReminderDialog(MedMainActivity.this, context, (SoundReminderDialog soundReminderDialog) -> {
-                        int Hour = new MedPref(context).getInt(MedPref.HOUR, 0);
-                        int Minute = new MedPref(context).getInt(MedPref.MINUTE, 0);
-                        if (Hour > 0) {
-                            Minute = 1;
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+                        if (DrawerMain.isOpen()) {
+                            DrawerMain.closeDrawer(GravityCompat.START);
                         }
-
-                        TvReminderTime.setVisibility(View.VISIBLE);
-
-                        int duration;
-                        if (new MedPref(context).getInt(MedPref.START_TIMER, 0) != 0) {
-                            int hours = 24;
-                            int minutes = 0;
-                            int seconds = 0;
-
-                            long totalTimeInSeconds = hours * 3600 + minutes * 60 + seconds;
-                            long totalTimeInMillis = totalTimeInSeconds * 1000;
-                            long curentInseconds = (Hour * 3600) + (Minute) + 0;
-                            long curentMillis = curentInseconds * 1000;
-                            duration = (int) (totalTimeInMillis - curentMillis);
+                        boolean Isreminder = new MedPref(context).getBoolean(MedPref.SET_TIMER, false);
+                        if (Isreminder) {
+                            new MedPref(context).putBoolean(MedPref.SET_TIMER, false);
+                            IvReminderTab.setImageResource(R.drawable.ic_reminder_non);
+                            countDownReminder.cancel();
+                            TvReminderTime.setVisibility(View.GONE);
                         } else {
-                            duration = Hour * 60 + Minute * (60 * 1000);
-                        }
-                        System.out.println("----- -- - +++ : " + Hour + " - - : " + Minute);
+                            LlSelectSoundPage.setVisibility(View.GONE);
+                            RvSelectSound.setVisibility(View.GONE);
+                            IvCategoryImg.setVisibility(View.VISIBLE);
+                            PagerCategory.setVisibility(View.VISIBLE);
+                            IvCategoryPrevious.setVisibility(View.VISIBLE);
+                            IvCategoryNext.setVisibility(View.VISIBLE);
+                            SoundReminderDialog reminderDialog = new SoundReminderDialog(MedMainActivity.this, context, (SoundReminderDialog soundReminderDialog) -> {
+                                int Hour = new MedPref(context).getInt(MedPref.HOUR, 0);
+                                int Minute = new MedPref(context).getInt(MedPref.MINUTE, 0);
+                                if (Hour > 0) {
+                                    Minute = 1;
+                                }
+
+                                TvReminderTime.setVisibility(View.VISIBLE);
+
+                                int duration;
+                                if (new MedPref(context).getInt(MedPref.START_TIMER, 0) != 0) {
+                                    int hours = 24;
+                                    int minutes = 0;
+                                    int seconds = 0;
+
+                                    long totalTimeInSeconds = hours * 3600 + minutes * 60 + seconds;
+                                    long totalTimeInMillis = totalTimeInSeconds * 1000;
+                                    long curentInseconds = (Hour * 3600) + (Minute) + 0;
+                                    long curentMillis = curentInseconds * 1000;
+                                    duration = (int) (totalTimeInMillis - curentMillis);
+                                } else {
+                                    duration = Hour * 60 + Minute * (60 * 1000);
+                                }
+                                System.out.println("----- -- - +++ : " + Hour + " - - : " + Minute);
 //                        duration = (Hour * 60 + Minute - 5);
-                        System.out.println("----- -- - +++ duration: " + duration);
-                        countDownReminder = new CountDownTimer((long) duration, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                System.out.println("----- -- - +++ : " + millisUntilFinished);
-                                long seconds = millisUntilFinished / 1000;
-                                long minutes = seconds / 60;
-                                long hour = minutes / 60;
-                                seconds %= 60;
+                                System.out.println("----- -- - +++ duration: " + duration);
+                                countDownReminder = new CountDownTimer((long) duration, 1000) {
+                                    @Override
+                                    public void onTick(long millisUntilFinished) {
+                                        System.out.println("----- -- - +++ : " + millisUntilFinished);
+                                        long seconds = millisUntilFinished / 1000;
+                                        long minutes = seconds / 60;
+                                        long hour = minutes / 60;
+                                        seconds %= 60;
 
-                                String timeLeftFormatted = String.format("%02d:%02d:%02d", hour, minutes, seconds);
-                                TvReminderTime.setText(timeLeftFormatted);
-                            }
+                                        String timeLeftFormatted = String.format("%02d:%02d:%02d", hour, minutes, seconds);
+                                        TvReminderTime.setText(timeLeftFormatted);
+                                    }
 
-                            @Override
-                            public void onFinish() {
-                                TvReminderTime.setVisibility(View.GONE);
-                                finishAffinity();
+                                    @Override
+                                    public void onFinish() {
+                                        TvReminderTime.setVisibility(View.GONE);
+                                        finishAffinity();
+                                    }
+                                };
+                                countDownReminder.start();
+                                IvReminderTab.setImageResource(R.drawable.ic_reminder_non);
+                                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                                    IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                } else {
+                                    IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                    IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                }
+                                soundReminderDialog.dismiss();
+                            });
+                            reminderDialog.show();
+                            WindowManager.LayoutParams lp = reminderDialog.getWindow().getAttributes();
+                            Window window = reminderDialog.getWindow();
+                            lp.copyFrom(window.getAttributes());
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                            lp.gravity = Gravity.CENTER;
+                            window.setAttributes(lp);
+                            IvReminderTab.setImageResource(R.drawable.ic_reminder);
+                            if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            } else {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                             }
-                        };
-                        countDownReminder.start();
-                        IvReminderTab.setImageResource(R.drawable.ic_reminder_non);
+                        }
+                        if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
+                            LlSelectedSoundsList.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
+                break;
+            case R.id.IvHomeTab:
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+                        if (DrawerMain.isOpen()) {
+                            DrawerMain.closeDrawer(GravityCompat.START);
+                        }
+
+                        LlSelectSoundPage.setVisibility(View.GONE);
+                        RvSelectSound.setVisibility(View.GONE);
+                        IvCategoryImg.setVisibility(View.VISIBLE);
+                        PagerCategory.setVisibility(View.VISIBLE);
+                        IvCategoryPrevious.setVisibility(View.VISIBLE);
+                        IvCategoryNext.setVisibility(View.VISIBLE);
                         if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
                             IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                             IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -769,62 +894,12 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                             IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                             IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                         }
-                        soundReminderDialog.dismiss();
-                    });
-                    reminderDialog.show();
-                    WindowManager.LayoutParams lp = reminderDialog.getWindow().getAttributes();
-                    Window window = reminderDialog.getWindow();
-                    lp.copyFrom(window.getAttributes());
-                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-                    lp.gravity = Gravity.CENTER;
-                    window.setAttributes(lp);
-                    IvReminderTab.setImageResource(R.drawable.ic_reminder);
-                    if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
-                        IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    } else {
-                        IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                        IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                        if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
+                            LlSelectedSoundsList.setVisibility(View.GONE);
+                        }
                     }
-                }
-                if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
-                    LlSelectedSoundsList.setVisibility(View.GONE);
-                }
-                break;
-            case R.id.IvHomeTab:
-                if (DrawerMain.isOpen()) {
-                    DrawerMain.closeDrawer(GravityCompat.START);
-                }
+                });
 
-                LlSelectSoundPage.setVisibility(View.GONE);
-                RvSelectSound.setVisibility(View.GONE);
-                IvCategoryImg.setVisibility(View.VISIBLE);
-                PagerCategory.setVisibility(View.VISIBLE);
-                IvCategoryPrevious.setVisibility(View.VISIBLE);
-                IvCategoryNext.setVisibility(View.VISIBLE);
-                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
-                    IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                } else {
-                    IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                    IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                }
-                if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
-                    LlSelectedSoundsList.setVisibility(View.GONE);
-                }
                 break;
             case R.id.IvPagesTab:
                 if (DrawerMain.isOpen()) {
@@ -880,6 +955,12 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
                     LlSelectedSoundsList.setVisibility(View.GONE);
                 }
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+
+                    }
+                });
                 break;
             case R.id.IvCustomTab:
                 if (DrawerMain.isOpen()) {
@@ -939,17 +1020,14 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
                     LlSelectedSoundsList.setVisibility(View.GONE);
                 }
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+
+                    }
+                });
                 break;
             case R.id.IvSetting:
-                if (DrawerMain.isOpen()) {
-                    DrawerMain.closeDrawer(GravityCompat.START);
-                }
-
-                LlSelectSoundPage.setVisibility(View.GONE);
-                RvSelectSound.setVisibility(View.GONE);
-                IvCategoryImg.setVisibility(View.VISIBLE);
-                PagerCategory.setVisibility(View.VISIBLE);
-
                 SoundSettingDialog settingDialog = new SoundSettingDialog(MedMainActivity.this, context);
                 settingDialog.show();
                 WindowManager.LayoutParams params = settingDialog.getWindow().getAttributes();
@@ -959,9 +1037,24 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 params.height = WindowManager.LayoutParams.WRAP_CONTENT;
                 params.gravity = Gravity.CENTER;
                 dialogWindow.setAttributes(params);
-                if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
-                    LlSelectedSoundsList.setVisibility(View.GONE);
-                }
+                MedAd_Interstitial.getMedInstance().showInterstitialAds(MedMainActivity.this, new MedAd_Interstitial.MedCallback() {
+                    @Override
+                    public void AppCallback() {
+                        if (DrawerMain.isOpen()) {
+                            DrawerMain.closeDrawer(GravityCompat.START);
+                        }
+
+                        LlSelectSoundPage.setVisibility(View.GONE);
+                        RvSelectSound.setVisibility(View.GONE);
+                        IvCategoryImg.setVisibility(View.VISIBLE);
+                        PagerCategory.setVisibility(View.VISIBLE);
+
+                        if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
+                            LlSelectedSoundsList.setVisibility(View.GONE);
+                        }
+                    }
+                });
+
                 break;
             case R.id.IvUpload:
                 if (DrawerMain.isOpen()) {
@@ -1043,7 +1136,26 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (!isStartPlayer) {
                     new PlayPauseAsynkTask().execute();
-                    IvSoundPlayPause.setImageResource(R.drawable.icon_pause);
+                    if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_pause_dark);
+                    } else {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_pause);
+                    }
+                    if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                        Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                        context.stopService(serviceIntent);
+                    }
+                    Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                    MedConstants.FAVOURITESONG = "";
+                    MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
+                    serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+                    serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Pause");
+//                            System.out.println("--- 0-0 - -- : service ");
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                context.startForegroundService(serviceIntent);
+//                            } else {
+                    context.startService(serviceIntent);
+//                            }
                     isStartPlayer = true;
                 } else {
                     if (countDownTimer != null) {
@@ -1060,7 +1172,26 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                             MedConstants.SelectedPlayerArrayList.get(i).getPlayer().stop();
                         }
                     }
-                    IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                    if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
+                    } else {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                    }
+                    if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                        Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                        context.stopService(serviceIntent);
+                    }
+                    Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                    MedConstants.FAVOURITESONG = "";
+                    MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Play";
+                    serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
+                    serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Play");
+//                            System.out.println("--- 0-0 - -- : service ");
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                context.startForegroundService(serviceIntent);
+//                            } else {
+                    context.startService(serviceIntent);
+//                            }
                 }
 
                 LlSelectSoundPage.setVisibility(View.GONE);
@@ -1078,11 +1209,15 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 if (countDownTimer != null) {
                     countDownTimer.cancel();
                 }
-//                if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
-//                    Intent serviceIntent = new Intent(context, MediaPlayerService.class);
-//                    context.stopService(serviceIntent);
-//                }
-                IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                if (MedConstants.isServiceRunning(context, MediaPlayerService.class)) {
+                    Intent serviceIntent = new Intent(context, MediaPlayerService.class);
+                    context.stopService(serviceIntent);
+                }
+                if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
+                } else {
+                    IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                }
                 LlButtonView.setVisibility(View.GONE);
                 TvReminderTime.setVisibility(View.GONE);
                 for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
@@ -1173,11 +1308,19 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                         @Override
                         public void DismissListener(SoundFavoriteDialog soundFavoriteDialog, String EdtName) {
                             soundFavoriteDialog.dismiss();
-                            IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                            IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                            IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
-                            IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-                            IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            } else {
+                                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                            }
 //todo insert0
                             int U_ID = helper.getGroupByUniqueId() + 1;
                             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
@@ -1195,16 +1338,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     window.setAttributes(layoutParams);
                 }
 
-//                String json = preferences.getString(FAVORITE_MEDIA_PLAYERS_KEY, null);
-//
-//                if (json != null) {
-//                    Gson gson = new Gson();
-//                    Type type = new TypeToken<List<MediaPlayerModel>>(){}.getType();
-//                    return gson.fromJson(json, type);
-//                } else {
-//                    return new ArrayList<>();
-//                }
-
                 if (MedConstants.SelectedPlayerArrayList.size() > 0) {
                     if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
                         LlSelectedSoundsList.setVisibility(View.GONE);
@@ -1215,7 +1348,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 if (DrawerMain.isOpen()) {
                     DrawerMain.closeDrawer(GravityCompat.START);
                 }
-                SoundPlayAllDialog soundPlayAllDialog = new SoundPlayAllDialog(context, new SoundPlayAllDialog.DialogDismiss() {
+                SoundPlayAllDialog soundPlayAllDialog = new SoundPlayAllDialog(MedMainActivity.this, new SoundPlayAllDialog.DialogDismiss() {
                     @Override
                     public void PlayListener(int selectedItemPosition, SoundPlayAllDialog playAllDialog) {
                         playAllDialog.dismiss();
@@ -1287,7 +1420,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void GotoCountDown(int duration) {
-//        countDownTimer = new CountDownTimer((5 * 1000), 1000) {
         countDownTimer = new CountDownTimer(duration * (60 * 1000), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -1303,7 +1435,11 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     GotoCountDown(duration);
                 } else {
                     System.out.println("---- - -- onFinish Up : " + CustomPos + " -- " + MedConstants.PlaylistSounds().size());
-                    IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                    if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
+                    } else {
+                        IvSoundPlayPause.setImageResource(R.drawable.icon_play);
+                    }
                     LlButtonView.setVisibility(View.GONE);
 
                     MedConstants.SelectedPlayerArrayList = new ArrayList<>();
@@ -1385,20 +1521,32 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         protected Void doInBackground(Void... voids) {
-            if (MedConstants.SelectedPlayerArrayList.size() > 0) {
-                for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
-                    MedConstants.SelectedPlayerArrayList.get(i).getPlayer().prepareAsync();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (MedConstants.SelectedPlayerArrayList.size() > 0) {
+                            for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
+                                MedConstants.SelectedPlayerArrayList.get(i).getPlayer().prepareAsync();
+                            }
+                        }
+                    } catch (IllegalStateException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            } else {
-                Toast.makeText(context, "No Sounds play now.", Toast.LENGTH_SHORT).show();
-            }
+            });
             return null;
         }
 
         @Override
         protected void onPostExecute(Void unused) {
-
+            if (MedConstants.SelectedPlayerArrayList.size() > 0) {
+            } else {
+                Toast.makeText(context, "No Sounds play now.", Toast.LENGTH_SHORT).show();
+            }
             ViewProgress.setVisibility(View.GONE);
+
             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                 int finalI = i;
                 MedConstants.SelectedPlayerArrayList.get(i).getPlayer().setOnPreparedListener(mp ->
@@ -1606,11 +1754,32 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             LlButtonView.setVisibility(View.VISIBLE);
             IvReminderTab.setImageResource(R.drawable.ic_reminder_non);
-            IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-            IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-            IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
-            IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
-            IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+            if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
+                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_dark), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvHomeTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvPagesTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+                IvCustomTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        SoundExitDialog soundExitDialog = new SoundExitDialog(MedMainActivity.this, context, () -> finishAffinity());
+        soundExitDialog.show();
+        WindowManager.LayoutParams attributes = soundExitDialog.getWindow().getAttributes();
+        Window exitDialogWindow = soundExitDialog.getWindow();
+        attributes.copyFrom(exitDialogWindow.getAttributes());
+        attributes.width = WindowManager.LayoutParams.MATCH_PARENT;
+        attributes.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        attributes.gravity = Gravity.BOTTOM;
+        exitDialogWindow.setAttributes(attributes);
     }
 }

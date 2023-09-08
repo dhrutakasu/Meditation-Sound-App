@@ -7,21 +7,21 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-public class MedSingleJsonPass extends Application {
-    private static MedSingleJsonPass medSingleJsonPass;
+public class MedAdsJsonPass extends Application {
+    private static MedAdsJsonPass medAdsJsonPass;
     private RequestQueue requestQueue;
     private static Context context;
 
-    private MedSingleJsonPass(Context context) {
-        MedSingleJsonPass.context = context;
+    private MedAdsJsonPass(Context context) {
+        MedAdsJsonPass.context = context;
         requestQueue = getMedRequestQueue();
     }
 
-    public static synchronized MedSingleJsonPass getMedInstance(Context context) {
-        if (medSingleJsonPass == null) {
-            medSingleJsonPass = new MedSingleJsonPass(context);
+    public static synchronized MedAdsJsonPass getMedInstance(Context context) {
+        if (medAdsJsonPass == null) {
+            medAdsJsonPass = new MedAdsJsonPass(context);
         }
-        return medSingleJsonPass;
+        return medAdsJsonPass;
     }
 
     public RequestQueue getMedRequestQueue() {

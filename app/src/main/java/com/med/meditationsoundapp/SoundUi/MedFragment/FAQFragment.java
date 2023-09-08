@@ -4,8 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdSize;
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundAds.MedAd_Banner;
+import com.med.meditationsoundapp.SoundConstants.MedConstants;
 
 import androidx.fragment.app.Fragment;
 
@@ -32,7 +36,9 @@ public class FAQFragment extends Fragment {
     }
 
     private void initActions() {
-
+        if (MedConstants.isConnectingToInternet(getContext())) {
+            MedAd_Banner.getMedInstance().showBannerAds(getActivity(), AdSize.LARGE_BANNER, (RelativeLayout) FAQView.findViewById(R.id.RlMedBannerAdView), (RelativeLayout) FAQView.findViewById(R.id.RlMedBannerAd));
+        }
     }
 
 }

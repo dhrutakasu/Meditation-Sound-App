@@ -33,6 +33,8 @@ public class MediaPlayerService extends Service {
     private static String CHANNEL_ID = "alarm_channel";
     private Context context;
     private String IconAction;
+    private NotificationManager mNotificationManager;
+    private NotificationCompat.Builder builder;
 
     public MediaPlayerService() {
     }
@@ -45,15 +47,15 @@ public class MediaPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("============= : " + MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
-//        Titles = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
-////        IconAction = intent.getStringExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
-//        IconAction = MedConstants.NOTIFICATION_PLAYPAUSE_ICON;
-//        context = this;
-//        if (SDK_INT > O)
-//            startMyOwnForeground();
-//        else
-//            startForeground(1, new Notification());
+        System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
+        Titles = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
+//        IconAction = intent.getStringExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
+        IconAction = MedConstants.NOTIFICATION_PLAYPAUSE_ICON;
+        context = this;
+        if (SDK_INT > O)
+            startMyOwnForeground();
+        else
+            startForeground(1, new Notification());
         return START_STICKY;
     }
 
@@ -67,7 +69,7 @@ public class MediaPlayerService extends Service {
     private void startMyOwnForeground() {
         createNotificationChannel(context);
 
-        NotificationCompat.Builder builder;
+
         if (SDK_INT >= O) {
             builder = new NotificationCompat.Builder(context, CHANNEL_ID);
         } else {
@@ -78,7 +80,7 @@ public class MediaPlayerService extends Service {
         remoteViews.setImageViewResource(R.id.notification_icon, R.mipmap.ic_launcher);
         remoteViews.setTextViewText(R.id.notification_title, getApplicationContext().getString(R.string.app_name));
         if (!Titles.equalsIgnoreCase("")) {
-            remoteViews.setTextViewText(R.id.notification_sub_title, MedConstants.IsNotificationFavoriteTitle);
+            remoteViews.setTextViewText(R.id.notification_sub_title, Titles);
         } else {
             remoteViews.setTextViewText(R.id.notification_sub_title, "Tap to open again");
         }
@@ -91,6 +93,7 @@ public class MediaPlayerService extends Service {
         }
 
         Intent PlayPauseIntent = new Intent(context, NotificationReceiver.class);
+        PlayPauseIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, Titles);
         if (IconAction.equalsIgnoreCase("Pause")) {
             PlayPauseIntent.putExtra(MedConstants.NOTIFICATION_ACTION, "Pause");
             remoteViews.setImageViewResource(R.id.notification_PlayPause, R.drawable.ic_pause);
@@ -107,27 +110,24 @@ public class MediaPlayerService extends Service {
         remoteViews.setOnClickPendingIntent(R.id.notification_PlayPause, PlayPausePendingIntent);
 
         Intent StopIntent = new Intent(context, NotificationReceiver.class);
+        PlayPauseIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, Titles);
         StopIntent.putExtra(MedConstants.NOTIFICATION_ACTION, "stop");
         PendingIntent StopPendingIntent;
         if (SDK_INT >= Build.VERSION_CODES.S) {
-            StopPendingIntent = PendingIntent.getBroadcast(context, 101, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            StopPendingIntent = PendingIntent.getBroadcast(context, 102, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            StopPendingIntent = PendingIntent.getBroadcast(context, 101, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            StopPendingIntent = PendingIntent.getBroadcast(context, 102, StopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
-        remoteViews.setOnClickPendingIntent(R.id.notification_PlayPause, StopPendingIntent);
-        NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        builder.setContent(remoteViews);
+        remoteViews.setOnClickPendingIntent(R.id.notification_Stop, StopPendingIntent);
+        mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setCustomBigContentView(remoteViews);
         builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setContentIntent(contentPendingIntent);
+        builder.setAutoCancel(false);
+        builder.setOngoing(true);
+        builder.setVibrate(new long[]{1000, 500, 1000, 500, 1000, 500});
+        builder.setSilent(true);
         mNotificationManager.notify(1000, builder.build());
-
-
-        Notification notification = builder.build();
-        notification.contentView = remoteViews;
-        notification.contentIntent = contentPendingIntent;
-        notification.vibrate = new long[]{1000, 500, 1000, 500, 1000, 500};
-        notification.color = ContextCompat.getColor(context, R.color.white);
-        notification.priority = Notification.PRIORITY_HIGH;
-        startForeground(1, notification);
 
     }
 
@@ -145,5 +145,14 @@ public class MediaPlayerService extends Service {
             channel.setBypassDnd(true);
             mgr.createNotificationChannel(channel);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("==== = = = =destrouy ");
+         mNotificationManager.cancelAll();
+        stopForeground(true);
+        stopSelf();
     }
 }

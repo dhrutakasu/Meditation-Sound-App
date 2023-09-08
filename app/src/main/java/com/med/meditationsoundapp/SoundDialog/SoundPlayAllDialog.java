@@ -1,5 +1,6 @@
 package com.med.meditationsoundapp.SoundDialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -13,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.med.meditationsoundapp.R;
+import com.med.meditationsoundapp.SoundAds.MedAd_Native;
 import com.med.meditationsoundapp.SoundUtils.MedPref;
 
 import androidx.annotation.NonNull;
@@ -22,9 +24,11 @@ import androidx.core.content.ContextCompat;
 
 public class SoundPlayAllDialog extends Dialog {
     private final DialogDismiss dialogDismiss;
+    private final Activity activity;
 
-    public SoundPlayAllDialog(Context context, DialogDismiss dismiss) {
+    public SoundPlayAllDialog(Activity context, DialogDismiss dismiss) {
         super(context);
+        activity=context;
         this.dialogDismiss = dismiss;
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
@@ -37,6 +41,7 @@ public class SoundPlayAllDialog extends Dialog {
         ImageView IvSelectAmbienceTitle = (ImageView) findViewById(R.id.IvSelectAmbienceTitle);
         TextView TvPlaySoundsDialog = (TextView) findViewById(R.id.TvPlaySoundsDialog);
         Spinner SpinnerPlayAll = (Spinner) findViewById(R.id.SpinnerPlayAll);
+        MedAd_Native.getMedInstance().showNativeAds250(activity, findViewById(R.id.FlNativePlayAll));
         String[] CountDown = {"2 Minutes", "3 Minutes", "5 Minutes", "10 Minutes", "15 Minutes", "20 Minutes", "30 Minutes"};
         SpinnerPlayAll.setSelection(new MedPref(getContext()).getInt(MedPref.INT_DURATION, 1));
         ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item, CountDown) {

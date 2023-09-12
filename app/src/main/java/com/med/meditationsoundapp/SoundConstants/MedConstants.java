@@ -31,6 +31,7 @@ public class MedConstants {
     public static final String BROADCAST_THEME = "BROADCAST_THEME";
     public static final String BROADCAST_SETTING = "BROADCAST_SETTING";
     public static final String BROADCAST_NOTIFICATION = "BROADCAST_NOTIFICATION";
+    public static final String BROADCAST_PROGRESS = "BROADCAST_PROGRESS";
     public static final String BROADCAST_FRAGMENT = "BROADCAST_FRAGMENT";
     public static final String FRAGMENT_CLICK = "FRAGMENT_CLICK";
     public static final String SERVICE_TITLE = "SERVICE_TITLE";

@@ -52,8 +52,8 @@ public class CategoryFragment extends Fragment {
     private CustomAdapter customAdapter;
     private ImageView IvLineBar;
     private ConstraintLayout ConstCategoryFarg;
-    private View ViewProgress;
-    private ProgressBar ProgressDialog;
+//    private View ViewProgress;
+//    private ProgressBar ProgressDialog;
 
     public static CategoryFragment newInstance(String category, int position) {
         CategoryFragment fragment = new CategoryFragment();
@@ -93,8 +93,8 @@ public class CategoryFragment extends Fragment {
         TvEmptyList = CategoryView.findViewById(R.id.TvEmptyList);
         RvCategoryList = CategoryView.findViewById(R.id.RvCategoryList);
         RvCustomCategoryList = CategoryView.findViewById(R.id.RvCustomCategoryList);
-        ViewProgress = CategoryView.findViewById(R.id.ViewProgress);
-        ProgressDialog = CategoryView.findViewById(R.id.ProgressDialog);
+//        ViewProgress = CategoryView.findViewById(R.id.ViewProgress);
+//        ProgressDialog = CategoryView.findViewById(R.id.ProgressDialog);
     }
 
     private void initListeners() {
@@ -106,9 +106,9 @@ public class CategoryFragment extends Fragment {
             TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
-            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+//            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
         } else {
-            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
+//            ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             ConstCategoryFarg.setBackgroundColor(ContextCompat.getColor(context, R.color.black_dark));
             TvCategoryList.setTextColor(ContextCompat.getColor(context, R.color.black));
             TvEmptyList.setTextColor(ContextCompat.getColor(context, R.color.black));
@@ -126,7 +126,9 @@ public class CategoryFragment extends Fragment {
                 try {
 
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
-                        ViewProgress.setVisibility(View.VISIBLE);
+                        Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                        intentS.putExtra("IsProgress", true);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
 
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
@@ -174,7 +176,10 @@ public class CategoryFragment extends Fragment {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ViewProgress.setVisibility(View.GONE);
+
+                                Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                                intentS.putExtra("IsProgress", false);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
                             }
                         },1000);
 
@@ -205,7 +210,10 @@ public class CategoryFragment extends Fragment {
             @Override
             public void SoundPlaysVolume(int position, int PlayerPos, int PlayerVolume) {
                 try {
-                    ViewProgress.setVisibility(View.VISIBLE);
+
+                    Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                    intentS.putExtra("IsProgress", true);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
                     System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                     SoundModelsList.get(position).setSoundVolume(PlayerVolume);
@@ -228,7 +236,10 @@ public class CategoryFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            ViewProgress.setVisibility(View.GONE);
+
+                            Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                            intentS.putExtra("IsProgress", false);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
                         }
                     },1000);
                 } catch (IOException e) {
@@ -243,7 +254,10 @@ public class CategoryFragment extends Fragment {
                 try {
 
                     if (MedConstants.SelectedPlayerArrayList.size() <= 9) {
-                        ViewProgress.setVisibility(View.VISIBLE);
+
+                        Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                        intentS.putExtra("IsProgress", true);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
 //                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
                             System.out.println("--- 0-0 - -- : " + position + " position :- - " + SoundModelsList.get(position).getSoundMp3Checked());
@@ -288,7 +302,10 @@ public class CategoryFragment extends Fragment {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                ViewProgress.setVisibility(View.GONE);
+
+                                Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                                intentS.putExtra("IsProgress", false);
+                                LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
                             }
                         },1000);
 
@@ -319,7 +336,10 @@ public class CategoryFragment extends Fragment {
             @Override
             public void SoundPlaysVolume(int position, int PlayerPos, int PlayerVolume) {
                 try {
-                    ViewProgress.setVisibility(View.VISIBLE);
+
+                    Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                    intentS.putExtra("IsProgress", true);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
 
                     System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -343,7 +363,10 @@ public class CategoryFragment extends Fragment {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            ViewProgress.setVisibility(View.GONE);
+
+                            Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
+                            intentS.putExtra("IsProgress", false);
+                            LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
                         }
                     },1000);
 

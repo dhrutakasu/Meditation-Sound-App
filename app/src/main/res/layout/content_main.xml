@@ -170,12 +170,13 @@
         android:id="@+id/ConsVolume"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/ic_volume_bar"
         android:padding="@dimen/_8sdp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/ConsBottom"
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideStarts">
 
         <ImageView
@@ -320,6 +321,20 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.92" />
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/TabCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:background="@android:color/transparent"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:layout_gravity="top"
+        app:layout_constraintStart_toStartOf="@id/PagerCategory"
+        app:layout_constraintEnd_toEndOf="@id/PagerCategory"
+        app:layout_constraintTop_toBottomOf="@id/IvCategoryImg"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/PagerCategory"
         android:layout_width="0dp"
@@ -330,15 +345,9 @@
         app:layout_constraintEnd_toEndOf="@id/guideEnds"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@id/guideStarts"
-        app:layout_constraintTop_toBottomOf="@+id/IvCategoryImg"
+        app:layout_constraintTop_toBottomOf="@+id/TabCategory"
         app:layout_constraintVertical_bias="0.0">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/TabCategory"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:visibility="gone" />
     </androidx.viewpager.widget.ViewPager>
 
     <LinearLayout
@@ -364,14 +373,6 @@
             tools:itemCount="2"
             tools:listitem="@layout/layout_item_sound_selected" />
     </LinearLayout>
-    <include
-        android:id="@+id/ViewProgress"
-        layout="@layout/dialog_progress"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
     <RelativeLayout
         android:id="@+id/RlMedBannerAd"
         android:layout_width="match_parent"

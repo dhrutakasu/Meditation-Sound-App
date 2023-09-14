@@ -17,7 +17,7 @@
         android:progressTint="@color/app_main_color"
         android:splitTrack="false"
         android:visibility="gone"
-        android:thumb="@null"
+        android:thumb="@drawable/seek_thumb_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/TvCategoryVolume"
         app:layout_constraintStart_toStartOf="@id/CardMusic"

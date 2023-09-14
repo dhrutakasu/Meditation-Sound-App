@@ -360,15 +360,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             SeekVolume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int newVolume, boolean b) {
-                    ViewProgress.setVisibility(View.VISIBLE);
-                    TvVolume.setText(newVolume + "");
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, newVolume, 0);
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            ViewProgress.setVisibility(View.GONE);
-                        }
-                    }, 1000);
                 }
 
                 @Override
@@ -377,6 +368,15 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
+                    ViewProgress.setVisibility(View.VISIBLE);
+                    TvVolume.setText(seekBar.getProgress() + "");
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, seekBar.getProgress(), 0);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewProgress.setVisibility(View.GONE);
+                        }
+                    }, 1000);
                 }
             });
 
@@ -540,7 +540,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             TvVolume.setTextColor(ContextCompat.getColor(context, R.color.black_dark));
             DrawerMain.setBackgroundColor(ContextCompat.getColor(context, R.color.black));
             SeekVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
-//            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
+            SeekVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector_dark));
             TvCountSounds.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             ConsBottom.setBackgroundColor(getResources().getColor(R.color.app_main_color_light10));
@@ -626,7 +626,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             TvVolume.setTextColor(ContextCompat.getColor(context, R.color.black));
             DrawerMain.setBackgroundColor(ContextCompat.getColor(context, R.color.black_dark));
             SeekVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
-//            SeekVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
+            SeekVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector));
             TvCountSounds.getBackground().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             ProgressDialog.getIndeterminateDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
             if (BtnId == 0) {
@@ -692,8 +692,11 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private BroadcastReceiver ThemeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            BtnId = 2;
+
             IvSoundStop.performClick();
             PagerCategory.getAdapter().notifyDataSetChanged();
+            TabCategory.setVisibility(View.VISIBLE);
             onResume();
         }
     };
@@ -1163,7 +1166,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                                     if (countDownTimer != null) {
                                         countDownTimer.cancel();
                                     }
-                                    new CustomSoundAsynkTask(position,true).execute();
+                                    new CustomSoundAsynkTask(position, true).execute();
                                 }));
                                 if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
                                     IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -1738,7 +1741,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
         public CustomSoundAsynkTask(int position, boolean b) {
             Pos = position;
-            bol=b;
+            bol = b;
         }
 
         @Override
@@ -1878,7 +1881,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             Intent intentFrag = new Intent(MedConstants.BROADCAST_FRAGMENT);
             intentFrag.putExtra(MedConstants.FRAGMENT_CLICK, "Cancel");
             LocalBroadcastManager.getInstance(context).sendBroadcast(intentFrag);
-            if (bol){
+            if (bol) {
                 PagerCategory.setCurrentItem(0);
 
                 TabCategory.setVisibility(View.VISIBLE);

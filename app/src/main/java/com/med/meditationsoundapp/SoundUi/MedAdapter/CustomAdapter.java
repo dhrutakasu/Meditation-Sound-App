@@ -47,6 +47,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.purple_light_dark));
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
+            holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector_dark));
 //            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black_dark));
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
@@ -54,6 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked);
             holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black));
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light10));
+            holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector));
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
 //            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
         }

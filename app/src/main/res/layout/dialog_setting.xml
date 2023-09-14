@@ -226,31 +226,33 @@
                 app:layout_constraintTop_toTopOf="@id/TvDeviceVolume"
                 app:track="@drawable/track_selector" />
         </LinearLayout>
-        <ImageView
-            android:id="@+id/IvOkDialogSetting"
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_16sdp"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_ok_btn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/SpinnerTimerInterface" />
+            android:layout_gravity="end">
 
-        <TextView
-            android:id="@+id/TvCancelDialogSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:gravity="end"
-            android:text="@string/cancel"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/IvOkDialogSetting"
-            app:layout_constraintTop_toBottomOf="@id/IvOkDialogSetting" />
+            <ImageView
+                android:id="@+id/IvOkDialogSetting"
+                android:layout_width="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_ok_btn" />
+
+            <TextView
+                android:id="@+id/TvCancelDialogSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/IvOkDialogSetting"
+                android:layout_alignStart="@+id/IvOkDialogSetting"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_16sdp"
+                android:gravity="center"
+                android:text="@string/cancel"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_14sdp" />
+        </RelativeLayout>
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline

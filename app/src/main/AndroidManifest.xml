@@ -23,9 +23,6 @@
             android:name=".SoundUi.MedActivity.PrivacyActivity"
             android:exported="false" />
         <activity
-            android:name=".SoundUi.MedActivity.FAQActivity"
-            android:exported="false" />
-        <activity
             android:name=".SoundUi.MedActivity.MedMainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

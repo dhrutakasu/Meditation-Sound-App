@@ -130,9 +130,7 @@ public class CategoryFragment extends Fragment {
                         intentS.putExtra("IsProgress", true);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
 
-//                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                            System.out.println("--- 0-0 - -- : " + position + " posed :- - " + SoundModelsList.get(position).getSoundMp3Checked());
                             SoundModelsList.get(position).setSoundMp3Checked(1);
                             if (MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().isPlaying()) {
                                 MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -143,12 +141,7 @@ public class CategoryFragment extends Fragment {
                             MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
                             serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
                             serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Pause");
-//                            System.out.println("--- 0-0 - -- : service ");
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                context.startForegroundService(serviceIntent);
-//                            } else {
                             context.startService(serviceIntent);
-//                            }
                             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                                 if (MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos() == MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayerPos()) {
                                     MedConstants.SelectedPlayerArrayList.remove(i);
@@ -186,9 +179,6 @@ public class CategoryFragment extends Fragment {
                         Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
                         intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                     } else {
                         SoundMaxDialog reminderDialog = new SoundMaxDialog(getActivity(), (SoundMaxDialog soundMaxDialog) -> {
                             soundMaxDialog.dismiss();
@@ -214,7 +204,6 @@ public class CategoryFragment extends Fragment {
                     Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
                     intentS.putExtra("IsProgress", true);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
-                    System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                     SoundModelsList.get(position).setSoundVolume(PlayerVolume);
                     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -258,9 +247,7 @@ public class CategoryFragment extends Fragment {
                         Intent intentS = new Intent(MedConstants.BROADCAST_PROGRESS);
                         intentS.putExtra("IsProgress", true);
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
-//                    try {
                         if (SoundModelsList.get(position).getSoundMp3Checked() == 0) {
-                            System.out.println("--- 0-0 - -- : " + position + " position :- - " + SoundModelsList.get(position).getSoundMp3Checked());
                             SoundModelsList.get(position).setSoundMp3Checked(1);
                             if (MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().isPlaying()) {
                                 MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -286,12 +273,7 @@ public class CategoryFragment extends Fragment {
                             MedConstants.FAVOURITESONG = "";
                             MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
                             serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
-                            System.out.println("--- 0-0 - -- : service ");
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                context.startForegroundService(serviceIntent);
-//                            } else {
                             context.startService(serviceIntent);
-//                            }
                         } else {
                             SoundModelsList.get(position).setSoundMp3Checked(0);
                             MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
@@ -312,9 +294,6 @@ public class CategoryFragment extends Fragment {
                         Intent intent = new Intent(MedConstants.BROADCAST_MAIN);
                         intent.putExtra(MedConstants.SelectedSounds, MedConstants.SelectedPlayerArrayList.size());
                         LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
                     } else {
                         SoundMaxDialog reminderDialog = new SoundMaxDialog(getActivity(), (SoundMaxDialog soundMaxDialog) -> {
                             soundMaxDialog.dismiss();
@@ -341,7 +320,6 @@ public class CategoryFragment extends Fragment {
                     intentS.putExtra("IsProgress", true);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intentS);
 
-                    System.out.println("*********b * * : " + PlayerVolume);
                     MedConstants.mediaPlayerArrayList.get(PlayerPos).getPlayer().stop();
                     SoundModelsList.get(position).setSoundVolume(PlayerVolume);
                     MediaPlayer mediaPlayer = new MediaPlayer();
@@ -420,11 +398,7 @@ public class CategoryFragment extends Fragment {
                 if (SoundModelsList.get(j).getSoundPos() == MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos()) {
                     soundModel.setSoundMp3Checked(1);
                     soundModel.setSoundVolume(MedConstants.SelectedPlayerArrayList.get(i).getPlayerVolume());
-//                } else {
-//                    soundModel.setSoundMp3Checked(0);
-//                    soundModel.setSoundVolume(soundModel.getSoundVolume());
                     SoundModelsList.set(j, soundModel);
-                    System.out.println("-------- hhh : " + SoundModelsList.get(j).getSoundMp3Checked());
                 }
             }
         }

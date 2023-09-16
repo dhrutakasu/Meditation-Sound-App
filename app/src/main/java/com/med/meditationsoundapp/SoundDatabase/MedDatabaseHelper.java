@@ -37,8 +37,6 @@ public class MedDatabaseHelper extends SQLiteOpenHelper {
                 SOUND_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 SOUND_NAME + " TEXT," +
                 SOUND_UNIQUE_ID + " INTEGER," +
-//                SOUND_PLAYER_NAME + " TEXT," +
-//                SOUND_PLAYER_MP3 + " TEXT," +
                 SOUND_PLAYER_POS + " INTEGER," +
                 SOUND_PLAYER_VOLUME + " TEXT)";
         sqLiteDatabase.execSQL(createTableQuery);
@@ -57,8 +55,6 @@ public class MedDatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(SOUND_NAME, Name);
         values.put(SOUND_UNIQUE_ID, id);
-//        values.put(SOUND_PLAYER_NAME, soundModel.getSoundTitle());
-//        values.put(SOUND_PLAYER_MP3, soundModel.getSoundMp3());
         values.put(SOUND_PLAYER_POS, SoundPos);
         values.put(SOUND_PLAYER_VOLUME, Volu);
 

@@ -54,7 +54,6 @@ public class SoundSettingDialog extends Dialog {
         TextView TvDefaultVolume = (TextView) findViewById(R.id.TvDefaultVolume);
         TextView TvTimerInterface = (TextView) findViewById(R.id.TvTimerInterface);
         TextView TvCancelDialogSetting = (TextView) findViewById(R.id.TvCancelDialogSetting);
-//        MedAd_Native.getMedInstance().showNativeAds250(activity, findViewById(R.id.FlNativeSetting));
 
         String[] CountDown = {"20s", "40s", "60s"};
         ArrayAdapter arrayAdapter = new ArrayAdapter(activity, android.R.layout.simple_spinner_item, CountDown) {

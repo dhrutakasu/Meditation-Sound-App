@@ -15,7 +15,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("======= === : " + intent.getStringExtra(MedConstants.NOTIFICATION_ACTION));
         if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("Pause")) {
             for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
                 if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
@@ -38,13 +37,8 @@ public class NotificationReceiver extends BroadcastReceiver {
                 MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
             }
             MedConstants.FAVOURITESONG = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
-            System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
             serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, MedConstants.FAVOURITESONG);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            context.startForegroundService(serviceIntent);
-//        } else {
             context.startService(serviceIntent);
-//        }
         } else if (intent.getStringExtra(MedConstants.NOTIFICATION_ACTION).equalsIgnoreCase("stop")) {
             for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
                 if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
@@ -73,13 +67,8 @@ public class NotificationReceiver extends BroadcastReceiver {
                 MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
             }
             MedConstants.FAVOURITESONG = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
-            System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
             serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, MedConstants.FAVOURITESONG);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            context.startForegroundService(serviceIntent);
-//        } else {
             context.startService(serviceIntent);
-//        }
         }
 
 

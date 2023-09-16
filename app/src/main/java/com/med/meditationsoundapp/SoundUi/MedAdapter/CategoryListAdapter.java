@@ -42,7 +42,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.IvCategoryImg.setImageResource(soundModelsList.get(position).getSoundIcon());
         holder.SeekCategoryVolume.setMax(100);
-        System.out.println("-- -- -- - - title : " + soundModelsList.get(position).getSoundMp3Checked() + " -- vol : " + soundModelsList.get(position).getSoundVolume());
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
             holder.IvCategoryImgChecked.setVisibility(View.VISIBLE);
             holder.TvCategoryVolume.setText(String.valueOf(soundModelsList.get(position).getSoundVolume()).toString());
@@ -58,14 +57,12 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
             holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector_dark));
-//                    .setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             holder.TvCategoryVolume.setTextColor(context.getResources().getColor(R.color.black_dark));
         } else {
             holder.TvCategoryVolume.setTextColor(context.getResources().getColor(R.color.black));
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked);
             holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector));
-//            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), android.graphics.PorterDuff.Mode.SRC_IN);
         }
         holder.IvCategoryImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +84,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("----- - - -seek : " + seekBar.getProgress());
                 setSoundPlay.SoundPlaysVolume(position, soundModelsList.get(position).getSoundPos(), seekBar.getProgress());
             }
         });

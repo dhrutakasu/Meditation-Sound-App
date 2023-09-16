@@ -36,10 +36,10 @@ public class MedConstants {
     public static final String FRAGMENT_CLICK = "FRAGMENT_CLICK";
     public static final String SERVICE_TITLE = "SERVICE_TITLE";
     public static final String NOTIFICATION_ACTION = "NOTIFICATION_ACTION";
-    public static final String MEDOPENAD = "AppOpenAd";
-    public static final String MEDBANNERAD = "BannerAd";
-    public static final String MEDINTERSTITALAD = "InterstitialAd";
-    public static final String MEDNATIVEAD = "NativaAds";
+    public static final String MEDOPENAD = "Appopad";
+    public static final String MEDBANNERAD = "Bannerad";
+    public static final String MEDINTERSTITALAD = "Interad";
+    public static final String MEDNATIVEAD = "Nativead";
     public static final String MEDSHOWAD = "AdShow";
     public static String NOTIFICATION_PLAYPAUSE_ICON = "NOTIFICATION_PLAYPAUSE_ICON";
     public static String FAVOURITESONG = "";
@@ -146,10 +146,6 @@ public class MedConstants {
             }
         }
         cursor.close();
-
-        for (int i = 0; i < audioLists.size(); i++) {
-            Log.e(" ", "******Audio Path ---->>>  " + audioLists.get(i).toString());
-        }
         return audioLists;
     }
 

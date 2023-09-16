@@ -47,9 +47,7 @@ public class MediaPlayerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("============= : " + intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle));
         Titles = intent.getStringExtra(MedConstants.IsNotificationFavoriteTitle);
-//        IconAction = intent.getStringExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON);
         IconAction = MedConstants.NOTIFICATION_PLAYPAUSE_ICON;
         context = this;
         if (SDK_INT > O)
@@ -150,7 +148,6 @@ public class MediaPlayerService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("==== = = = =destrouy ");
          mNotificationManager.cancelAll();
         stopForeground(true);
         stopSelf();

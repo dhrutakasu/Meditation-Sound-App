@@ -192,8 +192,6 @@ public class SoundReminderDialog extends Dialog {
                 TimerButtons = -1;
             }
             buttonsAdapter.notifyDataSetChanged();
-            System.out.println("---- - - - SSSS : " + minute);
-            System.out.println("---- - - - SFFS : " + buttonsModelArrayList.get(position).getSelected());
             TxEdt = Integer.parseInt(minute);
             TvTime.setText(MedConstants.convertToTimeString(minute));
         });
@@ -211,8 +209,6 @@ public class SoundReminderDialog extends Dialog {
                 } else if (TxEdt > 0) {
                     TxEdt = TxEdt - 1;
                 }
-                System.out.println("----====== : " + TxEdt);
-                System.out.println("--- - - - *** : " + MedConstants.convertToTimeString(String.valueOf(TxEdt)));
                 TvTime.setText(MedConstants.convertToTimeString(String.valueOf(TxEdt)));
             }
         });
@@ -228,8 +224,6 @@ public class SoundReminderDialog extends Dialog {
                 } else {
                     TxEdt++;
                 }
-                System.out.println("----====== : " + TxEdt);
-                System.out.println("--- - - - *** : " + MedConstants.convertToTimeString(String.valueOf(TxEdt)));
                 TvTime.setText(MedConstants.convertToTimeString(String.valueOf(TxEdt)));
             }
         });

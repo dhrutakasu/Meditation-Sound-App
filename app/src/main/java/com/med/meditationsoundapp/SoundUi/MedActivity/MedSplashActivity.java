@@ -32,7 +32,8 @@ public class MedSplashActivity extends AppCompatActivity {
 
     private long seconds = 0;
     private Context context;
-    private String url = "https://anshinfotech.in/api/soundapi.json";
+    private String url = "https://anshinfotech.in/sleeping_sounds/sound.json";
+//    private String url = "https://anshinfotech.in/api/soundapi.json";
     String MedAdShow, MedAppOpen, MedBannerAdId, MedInterstitialFullScreen = "", MedNativeAd;
     private long IntervalSeconds;
     private AppOpenAd.AppOpenAdLoadCallback MedLoadCallback;

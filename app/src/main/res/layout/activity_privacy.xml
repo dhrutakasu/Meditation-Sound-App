@@ -16,6 +16,23 @@
 
         <include layout="@layout/app_layout_header" />
     </RelativeLayout>
+
+    <WebView
+        android:id="@+id/WebPrivacy"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/RlHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/RlMedBannerAd" />
+    <include
+        android:id="@+id/ViewProgress"
+        layout="@layout/dialog_progress"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <RelativeLayout
         android:id="@+id/RlMedBannerAd"
         android:layout_width="match_parent"

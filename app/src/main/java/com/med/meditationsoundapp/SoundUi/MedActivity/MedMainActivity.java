@@ -719,7 +719,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private BroadcastReceiver MainNotificationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("== == = = =CheckedPlayOrPause : " + intent.getStringExtra("CheckedPlayOrPause"));
             if (intent.getStringExtra("CheckedPlayOrPause").equalsIgnoreCase("Play")) {
                 if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
                     IvSoundPlayPause.setImageResource(R.drawable.icon_pause_dark);
@@ -743,13 +742,11 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
     private BroadcastReceiver MainProgressReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            System.out.println("---- **((()) " + intent.getBooleanExtra("IsProgress", false));
             if (intent.getBooleanExtra("IsProgress", false)) {
                 ViewProgress.setVisibility(View.VISIBLE);
             } else {
                 ViewProgress.setVisibility(View.GONE);
             }
-//            ViewProgress.setVisibility(intent.getBooleanExtra("IsProgress", false) ? View.VISIBLE : View.GONE);
         }
     };
 
@@ -838,12 +835,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                                     Intent serviceIntent = new Intent(context, MediaPlayerService.class);
                                     MedConstants.FAVOURITESONG = favModels.get(SoundPos).getName();
                                     serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, favModels.get(SoundPos).getName());
-//                            serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON,"Pause");
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                context.startForegroundService(serviceIntent);
-//                            } else {
                                     context.startService(serviceIntent);
-//                            }
                                     new FavAsynkTask(integers).execute();
 
                                     soundSelectDialog.dismiss();
@@ -939,13 +931,9 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                                 } else {
                                     duration = Hour * 60 + Minute * (60 * 1000);
                                 }
-                                System.out.println("----- -- - +++ : " + Hour + " - - : " + Minute);
-//                        duration = (Hour * 60 + Minute - 5);
-                                System.out.println("----- -- - +++ duration: " + duration);
                                 countDownReminder = new CountDownTimer((long) duration, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
-                                        System.out.println("----- -- - +++ : " + millisUntilFinished);
                                         long seconds = millisUntilFinished / 1000;
                                         long minutes = seconds / 60;
                                         long hour = minutes / 60;
@@ -1315,12 +1303,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Pause";
                     serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
                     serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Pause");
-//                            System.out.println("--- 0-0 - -- : service ");
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                context.startForegroundService(serviceIntent);
-//                            } else {
                     context.startService(serviceIntent);
-//                            }
                     isStartPlayer = true;
                 } else {
                     if (countDownTimer != null) {
@@ -1351,12 +1334,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     MedConstants.NOTIFICATION_PLAYPAUSE_ICON = "Play";
                     serviceIntent.putExtra(MedConstants.IsNotificationFavoriteTitle, "");
                     serviceIntent.putExtra(MedConstants.NOTIFICATION_PLAYPAUSE_ICON, "Play");
-//                            System.out.println("--- 0-0 - -- : service ");
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                context.startForegroundService(serviceIntent);
-//                            } else {
                     context.startService(serviceIntent);
-//                            }
                 }
 
                 LlSelectSoundPage.setVisibility(View.GONE);
@@ -1416,7 +1394,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
 
                 RvSelectedSoundsList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
                 RvSelectedSoundsList.setAdapter(new SelectSoundListAdapter(context, MedConstants.SelectedPlayerArrayList, position -> {
-                    System.out.println("-- - -- - pos : " + position + " = = " + MedConstants.SelectedPlayerArrayList.get(position).getPlayerPos());
                     for (int i = 0; i < MedConstants.mediaPlayerArrayList.size(); i++) {
                         if (MedConstants.mediaPlayerArrayList.get(i).getPlayerPos() == MedConstants.SelectedPlayerArrayList.get(position).getPlayerPos()) {
                             if (MedConstants.mediaPlayerArrayList.get(i).getPlayer().isPlaying()) {
@@ -1442,7 +1419,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     RvSelectedSoundsList.getAdapter().notifyDataSetChanged();
                     PagerCategory.getAdapter().notifyDataSetChanged();
                 }));
-                System.out.println("=== selele : " + MedConstants.SelectedPlayerArrayList.size());
                 if (MedConstants.SelectedPlayerArrayList.size() > 0) {
                     if (LlSelectedSoundsList.getVisibility() == View.VISIBLE) {
                         LlSelectedSoundsList.setVisibility(View.GONE);
@@ -1467,12 +1443,10 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 if (DrawerMain.isOpen()) {
                     DrawerMain.closeDrawer(GravityCompat.START);
                 }
-                System.out.println("==== COUNTTT : " + helper.getGroupByUniqueId());
                 if (MedConstants.SelectedPlayerArrayList.size() >= 1) {
                     SoundFavoriteDialog favoriteDialog = new SoundFavoriteDialog(MedMainActivity.this, new SoundFavoriteDialog.DialogDismiss() {
                         @Override
                         public void DismissListener(SoundFavoriteDialog soundFavoriteDialog, String EdtName) {
-                            soundFavoriteDialog.dismiss();
                             if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
                                 IvFavoriteTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
                                 IvReminderTab.setColorFilter(ContextCompat.getColor(context, R.color.app_main_color_gray), android.graphics.PorterDuff.Mode.SRC_IN);
@@ -1491,6 +1465,8 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                             for (int i = 0; i < MedConstants.SelectedPlayerArrayList.size(); i++) {
                                 helper.InsertWidget(EdtName, U_ID, MedConstants.SelectedPlayerArrayList.get(i).getPlayerPos(), MedConstants.SelectedPlayerArrayList.get(i).getPlayerVolume());
                             }
+                            soundFavoriteDialog.dismiss();
+
                         }
                     });
                     favoriteDialog.show();
@@ -1581,18 +1557,15 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
         countDownTimer = new CountDownTimer(duration * (60 * 1000), 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                System.out.println("---- - -- TIICKKC : " + millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
                 CustomPos++;
                 if (CustomPos <= (MedConstants.PlaylistSounds().size() - 1)) {
-                    System.out.println("---- - -- onFinish : " + CustomPos + " -- " + MedConstants.PlaylistSounds().size());
                     new CustomSoundAsynkTask(CustomPos, false).execute();
                     GotoCountDown(duration);
                 } else {
-                    System.out.println("---- - -- onFinish Up : " + CustomPos + " -- " + MedConstants.PlaylistSounds().size());
                     if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
                         IvSoundPlayPause.setImageResource(R.drawable.icon_play_dark);
                     } else {
@@ -1643,13 +1616,7 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(context, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.NavFAQ:
-                if (DrawerMain.isOpen()) {
-                    DrawerMain.closeDrawer(GravityCompat.START);
-                }
-                startActivity(new Intent(context, FAQActivity.class));
-                break;
-            case R.id.NavRating:
+                case R.id.NavRating:
                 if (DrawerMain.isOpen()) {
                     DrawerMain.closeDrawer(GravityCompat.START);
                 }
@@ -1674,7 +1641,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
                     startActivity(Intent.createChooser(shareIntent, "Share link:"));
                 } catch (Exception e) {
-                    //e.toString();
                 }
                 break;
             case R.id.NavPolicy:
@@ -1769,7 +1735,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
             switch (Pos) {
                 case 0:
                     CustomSoundModels = MedConstants.RelaxingCoffeeSounds(context);
-                    System.out.println("--- - -- : " + CustomSoundModels.size());
                     break;
                 case 1:
                     CustomSoundModels = MedConstants.JourneySounds(context);
@@ -1839,7 +1804,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                 for (int i = 0; i < CustomSoundModels.size(); i++) {
                     if (CustomSoundModels.get(i).getSoundMp3Checked() == 0) {
                         PlayerPos = CustomSoundModels.get(i).getSoundPos();
-                        System.out.println("--- - -- : " + PlayerPos + " -- " + CustomSoundModels.get(i).getSoundVolume());
                         MediaPlayer mediaPlayer = new MediaPlayer();
                         float volume = (float) (1 - (Math.log(100 - CustomSoundModels.get(i).getSoundVolume()) / Math.log(100)));
                         mediaPlayer.setVolume(volume, volume);
@@ -1908,7 +1872,6 @@ public class MedMainActivity extends AppCompatActivity implements View.OnClickLi
                     for (int j = 0; j < integers.size(); j++) {
                         if (MedConstants.mediaPlayerArrayList.get(i).getPlayerPos() == integers.get(j)) {
                             MedConstants.SelectedPlayerArrayList.add(MedConstants.mediaPlayerArrayList.get(i));
-                            System.out.println("=== --- : " + SoundModelsList.get(i).getSoundMp3());
                             MediaPlayer mediaPlayer = new MediaPlayer();
                             float volume = (float) (1 - (Math.log(100 - SoundModelsList.get(i).getSoundVolume()) / Math.log(100)));
                             mediaPlayer.setVolume(volume, volume);

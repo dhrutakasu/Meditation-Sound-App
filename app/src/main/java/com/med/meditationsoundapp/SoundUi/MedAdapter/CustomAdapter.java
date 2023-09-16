@@ -43,12 +43,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.TvCustomTitle.setText(soundModelsList.get(position).getSoundTitle());
         holder.SeekCategoryVolume.setMax(100);
-        System.out.println("-- -- -- - - title : " + soundModelsList.get(position).getSoundMp3Checked() + " -- vol : " + soundModelsList.get(position).getSoundVolume());
         if (new MedPref(context).getBoolean(MedPref.BOOL_NIGHT, false)) {
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.purple_light_dark));
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200_dark)));
             holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector_dark));
-//            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200_dark), PorterDuff.Mode.SRC_IN);
             holder.TvCustomTitle.setTextColor(context.getResources().getColor(R.color.black_dark));
             holder.IvCategoryImgChecked.setImageResource(R.drawable.ic_checked_dark);
         } else {
@@ -57,7 +55,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             holder.ConstCutomText.setBackgroundColor(context.getResources().getColor(R.color.app_main_color_light10));
             holder.SeekCategoryVolume.setThumb(context.getDrawable(R.drawable.seek_thumb_selector));
             holder.SeekCategoryVolume.setProgressTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.purple_200)));
-//            holder.SeekCategoryVolume.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, R.color.purple_200), PorterDuff.Mode.SRC_IN);
         }
 
         if (soundModelsList.get(position).getSoundMp3Checked() != 0) {
@@ -94,7 +91,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                System.out.println("----- - - -seek : " + seekBar.getProgress());
                 setSoundPlay.SoundPlaysVolume(position, soundModelsList.get(position).getSoundPos(), seekBar.getProgress());
             }
         });
